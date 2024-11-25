@@ -1,5 +1,5 @@
 #include "DFA.h"
-
+using namespace std;
 
 DFA::DFA(vector<char> input_domain) : input_domain(move(input_domain)), transitions(), initial_state(-1), accepting_states() {}
 

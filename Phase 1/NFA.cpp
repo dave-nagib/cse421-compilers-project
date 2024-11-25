@@ -1,5 +1,5 @@
 #include "NFA.h"
-
+using namespace std;
 
 NFA::NFA() : states(), transitions(), initial_state(-1), accepting_states() {}
 

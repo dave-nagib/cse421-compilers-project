@@ -1,4 +1,5 @@
 #include "DFAMinimizer.h"
+using namespace std;
 
 map<pair<int, int>, bool> DFAMinimizer::distinguish_states() const {
   map<pair<int,int>,bool> distinguishable;
