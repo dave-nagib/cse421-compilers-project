@@ -10,37 +10,13 @@ NFA::NFA(unordered_set<int> states,
           unordered_map<int, int> accepting_states) {
   this->states = move(states);
   this->transitions = move(transitions);
-  this->add_state(initial_state, true);
-  for (auto pair: accepting_states) this->add_state(pair.first, false, true, pair.second);
-}
-
-
-void NFA::add_state(int state, bool initial = false, bool accepting = false, int token_id = -1) {
-  // Assert state is not negative
-  if(state < 0) throw runtime_error("State ID is negative.");
-  states.insert(state);
-  if(initial) this->initial_state = state;
-  if (accepting) {
-    if (token_id == -1) throw runtime_error("Pattern ID not provided for an accepting state.");
-    accepting_states[state] = token_id;
-  }
-}
-
-
-bool NFA::contains_state(int state) const {
-  return states.find(state) != states.end();
-}
-
-
-void NFA::add_transition(int src, char symbol, int dst) {
-  // Assert states are in the set
-  if(!this->contains_state(src) || !this->contains_state(dst))
-    throw runtime_error("Invalid source or destination states.");
-  transitions[src][symbol].emplace_back(dst);
+  this->make_initial(initial_state);
+  for (auto pair: accepting_states) this->make_accepting(pair.first, pair.second);
 }
 
 
 unordered_set<int> NFA::eps_closure(unordered_set<int> states) const {
+
   for (int state : states) {
     if (!this->contains_state(state)) throw runtime_error("Invalid state in epsilon closure.");
   }
@@ -70,9 +46,32 @@ unordered_set<int> NFA::eps_closure(unordered_set<int> states) const {
 }
 
 
+NFA NFA::copy_with_new_ids(int offset) const {
+  // Copy the states and transitions with new state IDs
+  unordered_set<int> new_states;
+  unordered_map<int, unordered_map<char, vector<int>>> new_transitions;
+  unordered_map<int, int> new_accepting_states;
+  for (int state : states) {
+    new_states.insert(state + offset);
+    if (transitions.find(state) != transitions.end()) {
+      for (auto tr : transitions.at(state)) {
+        for (int dst : tr.second) new_transitions[state + offset][tr.first].push_back(dst + offset);
+      }
+    }
+  }
+  for (auto pair : accepting_states) new_accepting_states[pair.first + offset] = pair.second;
+  return NFA(new_states, new_transitions, initial_state + offset, new_accepting_states);
+}
+
+
 unordered_set<int> NFA::get_initial() const {
   if (initial_state == -1) throw runtime_error("NFA doesn't have an initial state yet.");
   return eps_closure({initial_state});
+}
+
+
+unordered_set<int> NFA::get_states() const {
+  return states;
 }
 
 
@@ -87,14 +86,35 @@ int NFA::get_single_accepting() const {
 }
 
 
-int NFA::accept(int state) const {
-  auto res = accepting_states.find(state);
-  return (res != accepting_states.end())? res->second : -1;
+void NFA::add_state(int state) {
+  // Assert state is not negative
+  if(state < 0) throw runtime_error("State ID is negative.");
+  states.insert(state);
 }
 
 
-unordered_set<int> NFA::get_states() const {
-  return states;
+void NFA::make_initial(int state) {
+  if (!this->contains_state(state)) throw runtime_error("State to made initial does not exist in the NFA.");  
+  this->initial_state = state;
+}
+
+
+void NFA::make_accepting(int state, int token_id) {
+  if (!this->contains_state(state)) throw runtime_error("State to be made accepting does not exist in the NFA.");
+  this->accepting_states[state] = token_id;
+}
+
+
+void NFA::add_transition(int src, char symbol, int dst) {
+  // Assert states are in the set
+  if(!this->contains_state(src) || !this->contains_state(dst))
+    throw runtime_error("Invalid source or destination states.");
+  transitions[src][symbol].emplace_back(dst);
+}
+
+
+bool NFA::contains_state(int state) const {
+  return states.find(state) != states.end();
 }
 
 
@@ -114,7 +134,23 @@ unordered_set<int> NFA::transition(unordered_set<int> states, char symbol) const
 }
 
 
-NFA NFA::union_nfa(vector<NFA>& nfas, int new_start, bool common_accept = false, int new_accepting = -1, int token_id = -1) {
+int NFA::accept(int state) const {
+  auto res = accepting_states.find(state);
+  return (res != accepting_states.end())? res->second : -1;
+}
+
+
+int NFA::accept(unordered_set<int> states) const {
+  int min_token = INT_MAX;
+  for (int state : states) {
+    int token = this->accept(state);
+    if (token != -1) min_token = min(min_token, token);
+  }
+  return min_token;
+}
+
+
+NFA NFA::union_nfa(vector<NFA>& nfas, int new_start, bool common_accept, int new_accepting, int token_id) {
 
   // Combine the states of all NFAs into a new set
   unordered_set<int> new_states;
@@ -127,24 +163,35 @@ NFA NFA::union_nfa(vector<NFA>& nfas, int new_start, bool common_accept = false,
     throw runtime_error("New start state already exists in one of the NFAs.");
   if (new_states.size() != expected_size)
     throw runtime_error("There is overlap between the states of the NFAs.");
+  // Add the new start state to the set of states
+  new_states.insert(new_start);
   // Combine the transitions of all NFAs into a new map
   unordered_map<int, unordered_map<char, vector<int>>> new_transitions;
   for (const NFA& nfa : nfas) 
     new_transitions.insert(nfa.transitions.begin(), nfa.transitions.end());
+  // Get all initial states adding them to a vector, and add transitions from the new start state to them
+  vector<int> initial_states;
+  for (const NFA& nfa : nfas) initial_states.push_back(nfa.initial_state);
+  new_transitions[new_start]['\0'] = move(initial_states); // Epsilon transition from new start to all initial states
   // Construct the new NFA with combined states and transitions
   NFA combined_nfa = NFA(new_states, new_transitions, new_start, {});
-  for (const NFA& nfa : nfas) combined_nfa.add_transition(new_start, '\0', nfa.initial_state);
   // Choose a common accepting state or use multiple accepting states
   if (common_accept) {
     if (new_accepting == -1) throw runtime_error("New accept state ID not provided.");
-    if (new_states.find(new_start) != new_states.end())
-      throw runtime_error("New start state already exists in one of the NFAs.");
+    if (new_states.find(new_accepting) != new_states.end())
+      throw runtime_error("New common accepting state already exists in one of the NFAs.");
     if (token_id == -1) throw runtime_error("Pattern ID not provided.");
-    combined_nfa.add_state(new_accepting, false, true, token_id);
+    combined_nfa.add_state(new_accepting);
+    combined_nfa.make_accepting(new_accepting, token_id);
     for (const NFA& nfa : nfas) combined_nfa.add_transition(nfa.get_single_accepting(), '\0', new_accepting);
   } else {
-    for (const NFA& nfa : nfas) combined_nfa.add_state(nfa.get_single_accepting(), false, true, nfa.accept(nfa.get_single_accepting()));
+    for (const NFA& nfa : nfas) {
+      int nfa_accepting = nfa.get_single_accepting();
+      combined_nfa.add_state(nfa_accepting);
+      combined_nfa.make_accepting(nfa_accepting, nfa.accept(nfa_accepting));
+    }
   }
+  return combined_nfa;
 }
 
 
@@ -156,21 +203,18 @@ NFA NFA::simple_union(NFA& other, int new_start, int new_accept, int token_id) c
     throw runtime_error("New start or accept state already exists in one of the NFAs.");
   if (new_states.size() != this->states.size() + other.states.size())
     throw runtime_error("There is overlap between the states of the two NFAs.");
+  // Insert the new start and accept states into the set of states
+  new_states.insert(new_start);
+  new_states.insert(new_accept);
   // Combine the transitions of both NFAs into a new map
   auto new_transitions = this->transitions;
   new_transitions.insert(other.transitions.begin(), other.transitions.end());
-  // Get the starting and ending states of both NFAs
-  int self_start = this->initial_state, self_accept = this->get_single_accepting();
-  int other_start = other.initial_state, other_accept = other.get_single_accepting();
+  // Add starting and ending epsilon transitions
+  new_transitions[new_start]['\0'] = {this->initial_state, other.initial_state};
+  new_transitions[this->get_single_accepting()]['\0'].push_back(new_accept);
+  new_transitions[other.get_single_accepting()]['\0'].push_back(new_accept);
   // Construct the new NFA with combined states and transitions
-  NFA nfa = NFA(new_states, new_transitions, new_start, {{new_accept, token_id}}); //TODO: check syntax
-  // Add transitions from the new start state to the start states of both NFAs
-  nfa.add_transition(new_start, '\0', self_start);
-  nfa.add_transition(new_start, '\0', other_start);
-  // Add transitions from the accept states of both NFAs to the new accept state
-  nfa.add_transition(self_accept, '\0', new_accept);
-  nfa.add_transition(other_accept, '\0', new_accept);
-  return nfa;
+  return NFA(new_states, new_transitions, new_start, {{new_accept, token_id}});
 }
 
 
@@ -183,27 +227,53 @@ NFA NFA::simple_concat(NFA& other, int token_id) const {
   // Combine the transitions of both NFAs into a new map
   auto new_transitions = this->transitions;
   new_transitions.insert(other.transitions.begin(), other.transitions.end());
-  // Get the starting and ending states of both NFAs
-  int self_start = this->initial_state, self_accept = this->get_single_accepting();
-  int other_start = other.initial_state, other_accept = other.get_single_accepting();
+  // Add epsilon transition from this NFA's accepting state to the other NFA's start
+  new_transitions[this->get_single_accepting()]['\0'].push_back(other.initial_state);
   // Construct the new NFA with combined states and transitions
-  NFA nfa = NFA(new_states, new_transitions, self_start, {{other_accept, token_id}});
-  // Add an empty transition from this NFA's accepting state to the other NFA's start
-  nfa.add_transition(self_accept, '\0', other_start);
-  return nfa;
+  return NFA(new_states, new_transitions, this->initial_state, {{other.get_single_accepting(), token_id}});
 }
 
 
 NFA NFA::simple_repeat(bool zero_or_more, int new_accept, int token_id) const {
   // Get start and ending states of this NFA
   int self_start = this->initial_state, old_accept = this->get_single_accepting();
-  // Construct a new NFA with the same states and transitions and a new accept state
-  NFA nfa = NFA(this->states, this->transitions, this->initial_state, {{new_accept, token_id}});
-  // Add an empty transition from old end to start (loop)
-  nfa.add_transition(old_accept, '\0', self_start);
-  // Add an empty transition from old end to new end
-  nfa.add_transition(old_accept, '\0', new_accept);
+  // Copy the states of this NFA
+  auto new_states = this->states;
+  new_states.insert(new_accept); // Add the new accept state
+  // Copy the transitions of this NFA
+  auto new_transitions = this->transitions;
+  // Add an empty transition from old end to start (loop) and new end
+  new_transitions[old_accept]['\0'].push_back(self_start);
+  new_transitions[old_accept]['\0'].push_back(new_accept);
   // Add an empty transition from start to new end if it's zero or more
-  if (zero_or_more) nfa.add_transition(self_start, '\0', new_accept);
-  return nfa;
+  if (zero_or_more) new_transitions[self_start]['\0'].push_back(new_accept);
+  // Construct a new NFA with the same states and transitions and a new accept state
+  return NFA(new_states, new_transitions, this->initial_state, {{new_accept, token_id}});
+}
+
+
+void NFA::print_nfa() const {
+  cout << "NFA components:\n" << endl;
+
+  cout << "States: ";
+  for (int state : states) cout << state << " ";
+  cout << endl;
+
+  cout << "Initial state (epsilon closure): ";
+  for (int state : this->get_initial()) cout << state << " ";
+  cout << endl;
+
+  cout << "Accepting states:\n";
+  for (auto pair : accepting_states) cout << "\t" << pair.first << " with token " << pair.second << endl;
+
+  cout << "Transitions:" << endl;
+  for (auto pair : transitions) {
+    cout << "\tFrom state " << pair.first << ":" << endl;
+    for (auto tr : pair.second) {
+      string ip = (tr.first == '\0')? "eps" : string(1, tr.first);
+      cout << "\t\t---- " << ip << " ----> { ";
+      for (int state : tr.second) cout << state << " ";
+      cout << "}" << endl;
+    }
+  }
 }

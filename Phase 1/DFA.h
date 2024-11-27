@@ -40,8 +40,17 @@ class DFA {
     /** Returns the transitions out of some state */
     std::unordered_map<char, int> get_transitions_from(int state) const;
     
-    /** Add a state to the DFA. The state can be an initial and/or accepting. If it is accepting, a pattern_id must be provided. */
-    void add_state(int state, bool initial = false, bool accepting = false, int token_id = -1);
+    /** Add a state to the DFA. */
+    void add_state(int state);
+    /** 
+     * Removes a non-initial state, its ingoing (if reachable) and outgoing transitions, 
+     * and deletes it from accepting states if it was accepting. 
+     */
+    void remove_state(int state, bool reachable);
+    /** Set a state to be the initial state. */
+    void make_initial(int state);
+    /** Set a state to be an accepting state with a certain token id. */
+    void make_accepting(int state, int token_id);
     /** Add a transition from src to dst on input symbol. */
     void add_transition(int src, char symbol, int dst);
     /** Add all transitions from src at once with all possible inputs. */
@@ -58,6 +67,9 @@ class DFA {
 
     /** Returns the minimal equivalent DFA */
     // DFA minimize() const;
+
+    /** Function to print the DFA components for debugging */
+    void print_dfa() const;
 };
 
 #endif

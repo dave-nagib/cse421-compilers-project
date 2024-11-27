@@ -12,8 +12,8 @@ DFA::DFA(vector<char> input_domain,
   this->input_domain = move(input_domain);
   this->states = move(states);
   this->transitions = move(transitions);
-  this->add_state(initial_state, true);
-  for (auto pair: accepting_states) this->add_state(pair.first, false, true, pair.second);
+  this->make_initial(initial_state);
+  for (auto pair: accepting_states) this->make_accepting(pair.first, pair.second);
 }
 
 
@@ -42,15 +42,34 @@ unordered_map<char, int> DFA::get_transitions_from(int state) const {
 }
 
 
-void DFA::add_state(int state, bool initial = false, bool accepting = false, int token_id = -1) {
+void DFA::add_state(int state) {
   // Assert state is not negative
   if(state < 0) throw runtime_error("State ID is negative.");
   states.insert(state);
-  if(initial) this->initial_state = state;
-  if (accepting) {
-    if (token_id == -1) throw runtime_error("Pattern ID not provided for an accepting state.");
-    accepting_states[state] = token_id;
+}
+
+
+void DFA::remove_state(int state, bool reachable) {
+  if (!this->contains_state(state)) throw runtime_error("State to be removed does not exist in the DFA.");
+  if (initial_state == state) throw runtime_error("Cannot remove the initial state.");
+  states.erase(state);
+  transitions.erase(state);
+  accepting_states.erase(state);
+  if (reachable) {
+    for (auto& pair : transitions) pair.second.erase(state);
   }
+}
+
+
+void DFA::make_initial(int state) {
+  if (!this->contains_state(state)) throw runtime_error("State to made initial does not exist in the DFA.");  
+  this->initial_state = state;
+}
+
+
+void DFA::make_accepting(int state, int token_id) {
+  if (!this->contains_state(state)) throw runtime_error("State to be made accepting does not exist in the DFA.");
+  accepting_states[state] = token_id;
 }
 
 
@@ -104,6 +123,32 @@ int DFA::transition(int state, char symbol) const {
 int DFA::accept(int state) const {
   auto res = accepting_states.find(state);
   return (res != accepting_states.end())? res->second : -1;
+}
+
+
+void DFA::print_dfa() const {
+  cout << "DFA components:\n" << endl;
+
+  cout << "Input domain: ";
+  for (char symbol : input_domain) cout << symbol << " ";
+  cout << endl;
+
+  cout << "States: ";
+  for (int state : states) cout << state << " ";
+  cout << endl;
+
+  cout << "Initial state: " << initial_state << endl;
+
+  cout << "Accepting states:\n";
+  for (auto pair : accepting_states) cout << "\t" << pair.first << " with token " << pair.second << endl;
+
+  cout << "Transitions:" << endl;
+  for (auto pair : transitions) {
+    cout << "\tFrom state " << pair.first << ":" << endl;
+    for (auto tr : pair.second) {
+      cout << "\t\t---- " << tr.first << " ----> " << tr.second << endl;
+    }
+  }
 }
 
 
