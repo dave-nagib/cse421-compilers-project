@@ -113,7 +113,7 @@ bool DFA::contains_state(int state) const {
 int DFA::transition(int state, char symbol) const {
   if (!this->contains_state(state)) throw runtime_error("Invalid source state.");
   auto res_src = transitions.find(state);
-  if (res_src == transitions.end()) throw runtime_error("DFA is incomplete. A state has no transitions.");
+  if (res_src == transitions.end()) return -1; // Some states could have no transition, so insted of throwing an error, return -1.
   auto res_symbol = res_src->second.find(symbol);
   if (res_symbol == res_src->second.end()) throw runtime_error("Unknown input symbol.");
   return res_symbol->second;
