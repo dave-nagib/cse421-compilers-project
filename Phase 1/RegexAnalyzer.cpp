@@ -542,7 +542,7 @@ void RegexAnalyzer::parsLexicalRules()
   ifstream file(this->filePath);
   if (!file.is_open())
   {
-    cout << "Error opening file" << endl;
+    cout << "Error opening rules file" << endl;
     return;
   }
   string line;
@@ -747,7 +747,7 @@ NFA RegexAnalyzer::RegexToNFA()
   resolveRegularExpToken();
   printAll();
   NFA nfa = generateNFA();
-  nfa.print_nfa();
+  //nfa.print_nfa();
   return nfa;
 }
 

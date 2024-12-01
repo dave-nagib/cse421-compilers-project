@@ -3,6 +3,7 @@
 
 #include "NFA.h"
 #include "DFA.h"
+#include<bits/stdc++.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <queue>

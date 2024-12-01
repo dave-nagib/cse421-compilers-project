@@ -1,6 +1,7 @@
 #ifndef DFA_MINIMIZER_H
 #define DFA_MINIMIZER_H
 #include "DFA.h"
+#include <map>
 
 class DFAMinimizer {
   private:
