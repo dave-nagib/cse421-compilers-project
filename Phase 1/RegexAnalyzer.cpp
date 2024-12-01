@@ -925,6 +925,21 @@ NFA RegexAnalyzer::RegularExpTokenToNFA(RegularExpToken token)
   return FinalNFA;
 }
 
+unordered_map<char, std::string> RegexAnalyzer::getTokensIdNameMap()
+{
+  unordered_map<char, string> tokensIdNameMap;
+  for (RegularExpToken token : regularExpTokens)
+  {
+    tokensIdNameMap[token.get_id()] = token.get_name();
+  }
+  return tokensIdNameMap;
+}
+
+unordered_map<char, char> RegexAnalyzer::getCharTokensMap()
+{
+  return charTokens;
+}
+
 void RegexAnalyzer::printAll()
 {
   printRegularExpTokens();

@@ -82,6 +82,10 @@ class RegexAnalyzer {
     RegularExpToken get_token(int id) const;
     /** Converts the regular expressions to NFA. */
     NFA RegexToNFA();
+    /** Returns the tokens map id -> name */
+    std::unordered_map<char, std::string> getTokensIdNameMap();
+    /** Returns the char tokens map char -> id */
+    std::unordered_map<char, char> getCharTokensMap();
     void printRegularExpTokens();
     void printRegularDefTokens();
     void printCharTokens();
