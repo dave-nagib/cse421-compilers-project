@@ -33,6 +33,8 @@ class NFA {
     std::unordered_set<int> get_states() const;
     /** Returns a map of accepting states and their corresponding token ids. */
     std::unordered_map<int, int> get_accepting() const;
+    /** Returns the transitions out of some state */
+    std::unordered_map<char, std::vector<int>> get_transitions(int state) const;
     /** Returns the accepting state of the NFA. Assumes that the NFA has only one accepting state. */
     int get_single_accepting() const;
 

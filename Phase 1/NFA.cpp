@@ -74,6 +74,21 @@ unordered_set<int> NFA::get_states() const {
   return states;
 }
 
+unordered_map<char, vector<int>> NFA::get_transitions(int state) const{
+    // Check if the state exists in the NFA
+    if (!this->contains_state(state)) {
+        throw runtime_error("State does not exist in the NFA.");
+    }
+
+    // Check if the state has any transitions
+    auto it = transitions.find(state);
+    if (it != transitions.end()) {
+        return it->second; // Return the transitions for the given state
+    }
+
+    // If the state has no transitions, return an empty map
+    return unordered_map<char, vector<int>>();
+}
 
 unordered_map<int, int> NFA::get_accepting() const {
   return accepting_states;
@@ -142,9 +157,18 @@ int NFA::accept(int state) const {
 
 int NFA::accept(unordered_set<int> states) const {
   int min_token = INT_MAX;
+  unordered_set<int> states_with_accept;
   for (int state : states) {
-    int token = this->accept(state);
-    if (token != -1) min_token = min(min_token, token);
+      int token = this->accept(state);
+      states_with_accept.insert(token);
+  }
+  if (states_with_accept.size() == 1) {
+      return *states_with_accept.begin();
+  }
+
+  for (int state : states) {
+      int token = this->accept(state);
+      if (token != -1) min_token = min(min_token, token);
   }
   return min_token;
 }
