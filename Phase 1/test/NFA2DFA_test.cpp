@@ -2,8 +2,15 @@
 #include "NFA.h"
 #include "DFA.h"
 #include "NFA2DFA.h"
+#include "DFAMinimizer.h"
+#include <bits/stdc++.h>
 
 using namespace std;
+
+void custom_assert(bool condition, string message) {
+    if (!condition) throw runtime_error(message);
+}
+
 
 void test_1() {
     // Step 1: Construct the NFA
@@ -165,11 +172,92 @@ void test_3(){
         cout << "No accepting states in the DFA." << endl;
     }
 
+    DFAMinimizer minimizer1(dfa);
+    DFA minimized_dfa1 = minimizer1.minimize();
+    cout << "\n\nMinimization of DFA with 6 states (Expected minimal DFA has 2 states):\n";
+    custom_assert(minimized_dfa1.get_states().size() == 4, "Test 3 failed.");
+    minimized_dfa1.print_dfa();
 
 }
 
 
+void test_4(){
+    // Create the NFA
+    NFA nfa;
+
+    // Define states
+    nfa.add_state(0);
+    nfa.add_state(1);
+    nfa.add_state(2);
+    nfa.add_state(3);
+    nfa.add_state(4);
+
+    // Define transitions
+    nfa.add_transition(0, 'a', 1);
+    nfa.add_transition(1, 'a', 2);
+    nfa.add_transition(2, 'a', 2);
+    nfa.add_transition(2, 'b', 2);
+    nfa.add_transition(2, 'c', 2); //
+
+    nfa.add_transition(0, 'b', 3);
+    nfa.add_transition(1, 'b', 3);
+    nfa.add_transition(3, 'a', 3);
+    nfa.add_transition(3, 'b', 3);
+    nfa.add_transition(3, 'c', 3);
+
+    nfa.add_transition(0, 'c', 4);
+    nfa.add_transition(1, 'c', 4);
+    nfa.add_transition(4, 'a', 4);
+    nfa.add_transition(4, 'b', 4);
+    nfa.add_transition(4, 'c', 4);
+
+    // Set initial and accepting states
+    nfa.make_initial(0);
+    nfa.make_accepting(2,1);
+
+
+    // Print the NFA for reference
+    cout << "NFA Details:" << endl;
+    nfa.print_nfa();
+
+    // Convert to DFA
+    NFA2DFA converter;
+    DFA dfa = converter.convert(nfa);
+
+    // Print the DFA details
+    cout << "DFA Details:" << endl;
+    dfa.print_dfa();
+
+    // Validate DFA structure
+    if (!dfa.validate()) {
+        cout << "DFA validation failed: not all states have transitions for every input." << std::endl;
+    } else {
+        cout << "DFA validation passed." << endl;
+    }
+
+    //Check accepting states
+    auto dfa_accepting_states = dfa.get_accepting();
+    if (!dfa_accepting_states.empty()) {
+        cout << "DFA Accepting States:" << endl;
+        for (const auto& e : dfa_accepting_states) {
+            cout << "State " << e.first << " accepts token " << e.second << endl;
+        }
+    } else {
+        cout << "No accepting states in the DFA." << endl;
+    }
+
+    DFAMinimizer minimizer1(dfa);
+    DFA minimized_dfa1 = minimizer1.minimize();
+    cout << "\n\nMinimization of DFA with 6 states (Expected minimal DFA has 4 states):\n";
+    custom_assert(minimized_dfa1.get_states().size() == 4, "Test 4 failed.");
+    minimized_dfa1.print_dfa();
+
+}
+
 int main(){
+    test_1();
+    test_2();
     test_3();
+    test_4();
     return 0;
 }
