@@ -151,6 +151,29 @@ void DFA::print_dfa() const {
   }
 }
 
+int DFA::get_dead_state() const {
+    int dead_state = -1;
+    for (int state : states) {
+        // Skip accepting states
+        if (accepting_states.find(state) != accepting_states.end()) {
+            continue;
+        }
+
+        // Check if the state is dead
+        bool is_dead = true;
+        for (char symbol : input_domain) {
+            if (transitions.at(state).find(symbol) != transitions.at(state).end()
+                && transitions.at(state).at(symbol) != state) {
+                is_dead = false;
+                break;
+            }
+        }
+        if (is_dead) dead_state = state;
+    }
+    // there is no dead state if dead_state is -1
+    return dead_state;
+}
+
 
 // DFA DFA::minimize() const {
 

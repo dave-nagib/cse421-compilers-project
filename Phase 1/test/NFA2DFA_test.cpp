@@ -112,9 +112,64 @@ void test_2(){
 
 }
 
+// Lecture example
+void test_3(){
+    // Create the NFA
+    NFA nfa;
+
+    // Define states
+    nfa.add_state(0);
+    nfa.add_state(1);
+    nfa.add_state(2);
+    nfa.add_state(3);
+
+    // Define transitions
+    nfa.add_transition(0, 'a', 0);
+    nfa.add_transition(0, 'b', 0);
+    nfa.add_transition(0, 'a', 1);
+    nfa.add_transition(1, 'b', 2);
+    nfa.add_transition(2, 'b', 3);
+
+    // Set initial and accepting states
+    nfa.make_initial(0);
+    nfa.make_accepting(3,1);
+
+
+    // Print the NFA for reference
+    cout << "NFA Details:" << endl;
+    nfa.print_nfa();
+
+    // Convert to DFA
+    NFA2DFA converter;
+    DFA dfa = converter.convert(nfa);
+
+    // Print the DFA details
+    cout << "DFA Details:" << endl;
+    dfa.print_dfa();
+
+    // Validate DFA structure
+    if (!dfa.validate()) {
+        cout << "DFA validation failed: not all states have transitions for every input." << std::endl;
+    } else {
+        cout << "DFA validation passed." << endl;
+    }
+
+    //Check accepting states
+    auto dfa_accepting_states = dfa.get_accepting();
+    if (!dfa_accepting_states.empty()) {
+        cout << "DFA Accepting States:" << endl;
+        for (const auto& e : dfa_accepting_states) {
+            cout << "State " << e.first << " accepts token " << e.second << endl;
+        }
+    } else {
+        cout << "No accepting states in the DFA." << endl;
+    }
+
+
+}
+
 
 int main(){
-    test_1();
-    test_2();
+    test_3();
     return 0;
 }

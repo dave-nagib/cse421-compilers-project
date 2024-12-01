@@ -39,6 +39,8 @@ class DFA {
     std::unordered_map<int, int> get_accepting() const;
     /** Returns the transitions out of some state */
     std::unordered_map<char, int> get_transitions_from(int state) const;
+    /** Returns the dead state of the DFA */
+    int get_dead_state() const;
     
     /** Add a state to the DFA. */
     void add_state(int state);
