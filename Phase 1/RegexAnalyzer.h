@@ -73,7 +73,7 @@ class RegexAnalyzer {
     RegexAnalyzer();
 
     /** DI constructor */
-    RegexAnalyzer(std::string filePath);
+    RegexAnalyzer(const std::string& filePath);
     /** Returns the tokens of the regex. */
     std::vector<RegularExpToken> get_tokens() const;
     /** Returns a token by its name. */

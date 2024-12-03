@@ -3,7 +3,7 @@ using namespace std;
 
 RegexAnalyzer::RegexAnalyzer() {}
 
-RegexAnalyzer::RegexAnalyzer(string filePath)
+RegexAnalyzer::RegexAnalyzer(const string& filePath)
 {
   this->filePath = filePath;
   currentRegularExpId = 0;
