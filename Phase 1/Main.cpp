@@ -42,7 +42,8 @@ int main(int argc, char *argv[]) {
     std::cout << "Enter the path to the lexical rules file: ";
     std::cin >> rules_file_path;
 
-    RegexAnalyzer regex_analyzer("./test/Test Illustrations/lexical_rules_test1.txt");
+    // use absolute path for Test Illustrations\lexical_rules_test1.txt
+    RegexAnalyzer regex_analyzer("absoulte path");
     NFA nfa = regex_analyzer.RegexToNFA();
 
     // Use std::unordered_map and std::vector explicitly
@@ -58,6 +59,8 @@ int main(int argc, char *argv[]) {
 
     DFAMinimizer minimizer(dfa);
     DFA minimized_dfa = minimizer.minimize();
+    std::cout << "\n";
+    minimized_dfa.print_dfa();
 
     LexicalAnalyzer2 lexical_analyzer(minimized_dfa, charTokens);
 
@@ -65,7 +68,8 @@ int main(int argc, char *argv[]) {
     std::cout << "Enter the path to the input file: ";
     std::cin >> input_file_path;
 
-    std::vector<char> input_file = readFileToVector("./test/Test Illustrations/sample_program_test1.txt");
+    // use absolute path for Test Illustrations\sample_program_test1.txt
+    std::vector<char> input_file = readFileToVector("absolute path");
     input_file = cleanVector(input_file);
 
     std::vector<Symbol> symbol_table = lexical_analyzer.analyze(input_file);
