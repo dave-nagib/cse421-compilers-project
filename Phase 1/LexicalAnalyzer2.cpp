@@ -65,7 +65,6 @@ vector<Symbol> LexicalAnalyzer2::analyze(ifstream &input_file)
 
   do 
   {
-    cout << "Buffer size: " << buffer.size() << endl;
     // Reset EOF flag
     eof_flag = false;
     // Check if the buffer is empty
@@ -94,6 +93,13 @@ vector<Symbol> LexicalAnalyzer2::analyze(ifstream &input_file)
       //   cout << buffer.at(j);
       // }
       // Add to the symbol table the last accepted lexeme and token ID
+      /*cout << "Lexeme: ";
+      for (size_t j = 0; j < end_i; j++)
+      {
+        cout << buffer.at(j);
+      }
+      cout << endl;
+      cout << "Token ID: " << last_token << endl;*/
       symbol_table.push_back({
         string(buffer.begin(), buffer.begin() + end_i), // Lexeme, will be one character only if no token was found (end_i = 1)
         this->token_names.at(last_token) // Token name, will be ERROR if no token was found (last token = -1)

@@ -20,6 +20,8 @@ class RegexAnalyzer {
     std::string filePath;
     /** The Current Regular Expression ID */
     int currentRegularExpId;
+    /** The Current Keyword ID */
+    int currentkeyWordId;
     /** The Current Regular Definition ID */
     int currentRegularDefId;
     /** The Current char ID */

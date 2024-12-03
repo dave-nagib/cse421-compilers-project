@@ -7,8 +7,9 @@ RegexAnalyzer::RegexAnalyzer(const string& filePath)
 {
   this->filePath = filePath;
   currentRegularExpId = 0;
+  currentkeyWordId = -1;
   currentRegularDefId = 0;
-  currentCharId = 128;
+  currentCharId = -128;
   regularExpTokens = vector<RegularExpToken>();
   regularDefTokens = vector<RegularDefToken>();
   charTokens = unordered_map<char,char>();
@@ -368,6 +369,7 @@ void RegexAnalyzer::resolveRegularExpToken()
             for (char c = regex[i]; c <= regex[i + 2]; c++)
             {
               char charToken = c;
+              tokenKeywords.push_back('(');
               if (charTokens.find(charToken) != charTokens.end())
               {
                 token->add_usedCharsID(charTokens[charToken]);
@@ -384,6 +386,7 @@ void RegexAnalyzer::resolveRegularExpToken()
                 tokenKeywords.push_back('|');
               }
             }
+            tokenKeywords.push_back(')');
             i += 2; // Skip the range
           }
           else
@@ -458,6 +461,7 @@ void RegexAnalyzer::resolveRegularExpToken()
       else if (i + 1 < regex.size() && regex[i + 1] == '-')
       {
         // Handle character ranges (e.g., a-z)
+        tokenKeywords.push_back('(');
         for (char c = regex[i]; c <= regex[i + 2]; c++)
         {
           char charToken = c;
@@ -477,6 +481,7 @@ void RegexAnalyzer::resolveRegularExpToken()
             tokenKeywords.push_back('|');
           }
         }
+        tokenKeywords.push_back(')');
         i += 2; // Skip the range
       }
       else
@@ -563,7 +568,7 @@ void RegexAnalyzer::parsLexicalRules()
           {
             keywordChars[i] = charTokens[keywordstring[i]];
           }
-          RegularExpToken regToken = RegularExpToken(currentRegularExpId++, keywordstring, keywordstring, keywordChars);
+          RegularExpToken regToken = RegularExpToken(currentkeyWordId--, keywordstring, keywordstring, keywordChars);
           keywords.push_back(keywordstring);
           regularExpTokens.push_back(regToken);
           keywordChars.clear();
@@ -585,7 +590,7 @@ void RegexAnalyzer::parsLexicalRules()
           {
             keywordChars[i] = charTokens[keywordstring[i]];
           }
-          RegularExpToken regToken = RegularExpToken(currentRegularExpId++, keywordstring, keywordstring, keywordChars);
+          RegularExpToken regToken = RegularExpToken(currentkeyWordId--, keywordstring, keywordstring, keywordChars);
           keywords.push_back(keywordstring);
           regularExpTokens.push_back(regToken);
           keywordChars.clear();
@@ -604,7 +609,7 @@ void RegexAnalyzer::parsLexicalRules()
         charTokens[charToken[0]] = currentCharId++;
         punctuations.push_back(charToken);
         // add to regula expression
-        RegularExpToken regToken = RegularExpToken(currentRegularExpId++, charToken, charToken, vector<char>({charTokens[charToken[0]]}));
+        RegularExpToken regToken = RegularExpToken(currentkeyWordId--, charToken, charToken, vector<char>({charTokens[charToken[0]]}));
         regularExpTokens.push_back(regToken);
         if (i > 1 && line[i - 1] == '\\')
         {
@@ -772,6 +777,7 @@ NFA RegexAnalyzer::RegularExpTokenToNFA(RegularExpToken token)
   {
     if (keywords[i] < 0)
     {
+      cout << "char: " << keywords[i] << endl;
       int intialState = stateCounter++;
       int acceptingState = stateCounter++;
       NFA defNFA = NFA();
@@ -800,9 +806,12 @@ NFA RegexAnalyzer::RegularExpTokenToNFA(RegularExpToken token)
   // add a '(' at the start of the keywords and a ')' at the end of the keywords
   keywords.insert(keywords.begin(), '(');
   keywords.push_back(')');
-  int keywordIndex = 0, baseNFAIndex = 0, bracketStart = 0, bracketEnd = 0;
+  int baseNFAIndex = 0, bracketStart = 0, bracketEnd = 0;
   while (keywords.size() > 1) // O(number of keywords * number of brackets)
   {
+    baseNFAIndex = 0;
+    bracketStart = 0;
+    bracketEnd = 0;
     for (size_t i = 0; i < keywords.size(); i++)
     {
       if (keywords[i] == '(')
@@ -814,20 +823,21 @@ NFA RegexAnalyzer::RegularExpTokenToNFA(RegularExpToken token)
         bracketEnd = i;
         for (size_t j = 0; j < bracketStart; j++)
         {
-          if (keywords[i] == 'n')
+          if (keywords[j] == 'n')
           {
             baseNFAIndex++;
           }
         }
+        // 1. handle the case of a character followed by one of the operators *, +, ?
+        //print the size of the keywords between the brackets
+        int nfaIter = baseNFAIndex;
         for (size_t j = bracketStart+1; j < bracketEnd; j++)
         {
-          if (keywords[j] == 'n')
+          if (keywords[j] == 'n' && j+1<bracketEnd && (keywords[j+1] == '*' | keywords[j+1] == '+'))
           {
-            if (j+1 < bracketEnd)
-            {
-              if (keywords[j+1] == '*')
+            if (keywords[j+1] == '*')
               {
-                baseNFAs[baseNFAIndex] = baseNFAs[baseNFAIndex].simple_repeat(true, stateCounter++, 0);
+                baseNFAs[nfaIter] = baseNFAs[nfaIter].simple_repeat(true, stateCounter++, 0);
                 //remove element with index j+1 from keywords
                 keywords.erase(keywords.begin() + j+1);
                 --j;
@@ -835,86 +845,70 @@ NFA RegexAnalyzer::RegularExpTokenToNFA(RegularExpToken token)
               }
               else if (keywords[j+1] == '+')
               {
-                baseNFAs[baseNFAIndex] = baseNFAs[baseNFAIndex].simple_repeat(false, stateCounter++, 0);
+                baseNFAs[nfaIter] = baseNFAs[nfaIter].simple_repeat(false, stateCounter++, 0);
                 //remove element with index j+1 from keywords
                 keywords.erase(keywords.begin() + j+1);
                 --j;
                 bracketEnd--;
               }
-              else if (keywords[j+1] == '|')
-              {
-                if (keywords[j+3] == '*')
-                {
-                  baseNFAs[baseNFAIndex+1] = baseNFAs[baseNFAIndex+1].simple_repeat(true, stateCounter++, 0);
-                  //remove element with index j+3 from keywords
-                  keywords.erase(keywords.begin() + j+3);
-                  --j;
-                  bracketEnd--;
-                }
-                else if (keywords[j+3] == '+')
-                {
-                  baseNFAs[baseNFAIndex+1] = baseNFAs[baseNFAIndex+1].simple_repeat(false, stateCounter++, 0);
-                  //remove element with index j+3 from keywords
-                  keywords.erase(keywords.begin() + j+3);
-                  --j;
-                  bracketEnd--;
-                }
-                else
-                {
-                  baseNFAs[baseNFAIndex] = baseNFAs[baseNFAIndex].simple_union(baseNFAs[baseNFAIndex+1], stateCounter++, stateCounter++, 0);
-                  //remove elements with index j+1 and j+2 from keywords
-                  keywords.erase(keywords.begin() + j+1);
-                  keywords.erase(keywords.begin() + j+1);
-                  //remove the baseNFA with index baseNFAIndex+1
-                  baseNFAs.erase(baseNFAs.begin() + baseNFAIndex+1);
-                  --j;
-                  bracketEnd -= 2;
-                }
-              }
-              else if (keywords[j+1] == 'n')
-              {
-                if (keywords[j+2] == '*')
-                {
-                  baseNFAs[baseNFAIndex+1] = baseNFAs[baseNFAIndex+1].simple_repeat(true, stateCounter++, 0);
-                  //remove element with index j+2 from keywords
-                  keywords.erase(keywords.begin() + j+2);
-                  --j;
-                  bracketEnd--;
-                }
-                else if (keywords[j+2] == '+')
-                {
-                  baseNFAs[baseNFAIndex+1] = baseNFAs[baseNFAIndex+1].simple_repeat(false, stateCounter++, 0);
-                  //remove element with index j+2 from keywords
-                  keywords.erase(keywords.begin() + j+2);
-                  --j;
-                  bracketEnd--;
-                }
-                else
-                {
-                  baseNFAs[baseNFAIndex] = baseNFAs[baseNFAIndex].simple_concat(baseNFAs[baseNFAIndex+1], 0);
-                  //remove element with index j+1 from keywords
-                  keywords.erase(keywords.begin() + j+1);
-                  //remove the baseNFA with index baseNFAIndex+1
-                  baseNFAs.erase(baseNFAs.begin() + baseNFAIndex+1);
-                  --j;
-                  bracketEnd--;
-                }          
-              }
-            }
-            else
-            {
-              // now there is only one nfa inbetween the brackets (n)
-              // remove the brackets
-              keywords.erase(keywords.begin() + bracketStart);
-              keywords.erase(keywords.begin() + bracketEnd-1);
-              break;
-            }
           }
-          else{
-            // print errot wronf format
-              cout << "keywords: " << keywords[j] << endl;
-              assert(("Invalid line format detected", false));
+          else if(keywords[j]=='n'){
+            nfaIter++;
           }
+        }
+        // 2. handle the case of a character followed by a character (concatenation)
+        nfaIter = baseNFAIndex;
+        for(size_t j = bracketStart+1; j < bracketEnd; j++)
+        {
+          if (keywords[j] == 'n' && j+1<bracketEnd && keywords[j+1] == 'n')
+          {
+            baseNFAs[nfaIter] = baseNFAs[nfaIter].simple_concat(baseNFAs[nfaIter+1], 0);
+            //remove element with index j+1 from keywords
+            keywords.erase(keywords.begin() + j+1);
+            //remove the baseNFA with index nfaIter+1
+            baseNFAs.erase(baseNFAs.begin() + nfaIter+1);
+            --j;
+            bracketEnd--;
+          }
+          else if(keywords[j]=='n'){
+            nfaIter++;
+          }
+        }
+        // 3. handle the case of a character followed by '|' and then a character (union)
+        vector <NFA> tempNFAs;
+        for(size_t j = bracketStart+1; j < bracketEnd; j++)
+        {
+          if (keywords[j] == 'n' && j+1<bracketEnd && keywords[j+1] == '|')
+          {
+            tempNFAs.push_back(baseNFAs[baseNFAIndex+1]);
+            //remove elements with index j+1 and j+2 from keywords
+            keywords.erase(keywords.begin() + j+1);
+            keywords.erase(keywords.begin() + j+1);
+            //remove the baseNFA with index baseNFAIndex+1
+            baseNFAs.erase(baseNFAs.begin() + baseNFAIndex+1);
+            --j;
+            bracketEnd -= 2;
+          }
+        }
+        //push baseNFAIndex to the beggining of the vector
+        tempNFAs.insert(tempNFAs.begin(), baseNFAs[baseNFAIndex]);
+        baseNFAs[baseNFAIndex] = NFA::union_nfa(tempNFAs, stateCounter++, true, stateCounter++, 0);
+        if (bracketEnd - bracketStart == 2)
+        {
+          keywords.erase(keywords.begin() + bracketStart);
+          keywords.erase(keywords.begin() + bracketEnd-1);
+        }
+        else
+        {
+          cout << "bracketStart: " << bracketStart << " bracketEnd: " << bracketEnd << endl;
+          cout << "keywords in the bracket: ";
+          for (size_t j = bracketStart; j <= bracketEnd; j++)
+          {
+            cout << keywords[j] << " ";
+          }
+          cout << endl;
+          //invalid regular expression
+          assert(("Invalid regular expression", false));
         }
         break;
       }

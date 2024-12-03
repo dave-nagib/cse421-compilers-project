@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
     std::cout << "\n";
     //minimized_dfa.print_dfa();
 
+    tokens[-1] = "ERROR";
     LexicalAnalyzer2 lexical_analyzer(minimized_dfa, charTokens, tokens);
 
     std::string input_file_path;
@@ -43,7 +44,6 @@ int main(int argc, char *argv[]) {
     std::cin >> input_file_path;
 
     std::ifstream input_file("./test/Test Illustrations/sample_program_test1.txt", std::ios::binary);
-
     std::vector<Symbol> symbol_table = lexical_analyzer.analyze(input_file);
 
     std::cout << "Symbol Table:" << std::endl;
