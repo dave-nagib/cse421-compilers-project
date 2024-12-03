@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     NFA nfa = regex_analyzer.RegexToNFA();
 
     // Use std::unordered_map and std::vector explicitly
-    std::unordered_map<char, std::string> tokens = regex_analyzer.getTokensIdNameMap();
+    std::unordered_map<int, std::string> tokens = regex_analyzer.getTokensIdNameMap();
     std::unordered_map<char, char> charTokens = regex_analyzer.getCharTokensMap();
 
     NFA2DFA converter;
@@ -59,25 +59,19 @@ int main(int argc, char *argv[]) {
     DFAMinimizer minimizer(dfa);
     DFA minimized_dfa = minimizer.minimize();
 
-    LexicalAnalyzer2 lexical_analyzer(minimized_dfa, charTokens);
+    LexicalAnalyzer2 lexical_analyzer(minimized_dfa, charTokens, tokens);
 
     std::string input_file_path;
     std::cout << "Enter the path to the input file: ";
     std::cin >> input_file_path;
 
-    std::vector<char> input_file = readFileToVector("./test/Test Illustrations/sample_program_test1.txt");
-    input_file = cleanVector(input_file);
+    std::ifstream input_file("./test/Test Illustrations/sample_program_test1.txt", std::ios::binary);
 
     std::vector<Symbol> symbol_table = lexical_analyzer.analyze(input_file);
 
     std::cout << "Symbol Table:" << std::endl;
     for (const Symbol &symbol : symbol_table) {
-        std::cout << "Lexeme: " << symbol.lexeme << ", Token ID: " << symbol.token_id << std::endl;
-    }
-
-    std::cout << "Tokens Names:" << std::endl;
-    for (const Symbol &symbol : symbol_table) {
-        std::cout << tokens[symbol.token_id] << std::endl;
+        std::cout << "Lexeme: " << symbol.lexeme << ", Token ID: " << symbol.token_name << std::endl;
     }
     return 0;
 }

@@ -6,8 +6,8 @@ RegexAnalyzer::RegexAnalyzer() {}
 RegexAnalyzer::RegexAnalyzer(string filePath)
 {
   this->filePath = filePath;
-  currentRegularExpId = 128;
-  currentRegularDefId = 128;
+  currentRegularExpId = 0;
+  currentRegularDefId = 0;
   currentCharId = 128;
   regularExpTokens = vector<RegularExpToken>();
   regularDefTokens = vector<RegularDefToken>();
@@ -925,9 +925,9 @@ NFA RegexAnalyzer::RegularExpTokenToNFA(RegularExpToken token)
   return FinalNFA;
 }
 
-unordered_map<char, std::string> RegexAnalyzer::getTokensIdNameMap()
+unordered_map<int, std::string> RegexAnalyzer::getTokensIdNameMap()
 {
-  unordered_map<char, string> tokensIdNameMap;
+  unordered_map<int, string> tokensIdNameMap;
   for (RegularExpToken token : regularExpTokens)
   {
     tokensIdNameMap[token.get_id()] = token.get_name();

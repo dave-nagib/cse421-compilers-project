@@ -61,10 +61,11 @@ vector<Symbol> LexicalAnalyzer2::analyze(ifstream &input_file)
   // }
 
   // // print the buffer size
-  // cout << "Buffer size: " << buffer.size() << endl;
+  
 
   do 
   {
+    cout << "Buffer size: " << buffer.size() << endl;
     // Reset EOF flag
     eof_flag = false;
     // Check if the buffer is empty

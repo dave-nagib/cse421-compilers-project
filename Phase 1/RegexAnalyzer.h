@@ -19,9 +19,9 @@ class RegexAnalyzer {
     /** The file path of the lexical rules. */
     std::string filePath;
     /** The Current Regular Expression ID */
-    char currentRegularExpId;
+    int currentRegularExpId;
     /** The Current Regular Definition ID */
-    char currentRegularDefId;
+    int currentRegularDefId;
     /** The Current char ID */
     char currentCharId;
     /** The Current state ID */
@@ -83,7 +83,7 @@ class RegexAnalyzer {
     /** Converts the regular expressions to NFA. */
     NFA RegexToNFA();
     /** Returns the tokens map id -> name */
-    std::unordered_map<char, std::string> getTokensIdNameMap();
+    std::unordered_map<int, std::string> getTokensIdNameMap();
     /** Returns the char tokens map char -> id */
     std::unordered_map<char, char> getCharTokensMap();
     void printRegularExpTokens();
