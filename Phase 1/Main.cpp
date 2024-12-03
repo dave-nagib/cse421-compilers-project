@@ -11,39 +11,13 @@
 #include <unordered_map>
 #include <string>
 
-std::vector<char> readFileToVector(const std::string& input_file_path) {
-    std::ifstream input_file(input_file_path, std::ios::binary);
-    if (!input_file.is_open()) {
-        throw std::runtime_error("Error opening file: " + input_file_path);
-    }
-    input_file.seekg(0, std::ios::end);
-    std::streamsize file_size = input_file.tellg();
-    input_file.seekg(0, std::ios::beg);
-
-    std::vector<char> file_contents(file_size);
-    if (!input_file.read(file_contents.data(), file_size)) {
-        throw std::runtime_error("Error reading file: " + input_file_path);
-    }
-    input_file.close();
-    return file_contents;
-}
-
-std::vector<char> cleanVector(const std::vector<char>& input_file) {
-    std::vector<char> cleaned_file;
-    for (char c : input_file) {
-        if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v' || c == '\f') continue;
-        cleaned_file.push_back(c);
-    }
-    return cleaned_file;
-}
-
 int main(int argc, char *argv[]) {
     std::string rules_file_path;
     std::cout << "Enter the path to the lexical rules file: ";
     std::cin >> rules_file_path;
 
     // use absolute path for Test Illustrations\lexical_rules_test1.txt
-    RegexAnalyzer regex_analyzer("absoulte path");
+    RegexAnalyzer regex_analyzer("./test/Test Illustrations/lexical_rules_test1.txt");
     NFA nfa = regex_analyzer.RegexToNFA();
 
     // Use std::unordered_map and std::vector explicitly
@@ -60,7 +34,7 @@ int main(int argc, char *argv[]) {
     DFAMinimizer minimizer(dfa);
     DFA minimized_dfa = minimizer.minimize();
     std::cout << "\n";
-    minimized_dfa.print_dfa();
+    //minimized_dfa.print_dfa();
 
     LexicalAnalyzer2 lexical_analyzer(minimized_dfa, charTokens, tokens);
 
