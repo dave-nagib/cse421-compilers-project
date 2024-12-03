@@ -65,6 +65,8 @@ vector<Symbol> LexicalAnalyzer2::analyze(ifstream &input_file)
 
   do 
   {
+    // Reset EOF flag
+    eof_flag = false;
     // Check if the buffer is empty
     if (i == buffer.size())
     {
@@ -102,8 +104,6 @@ vector<Symbol> LexicalAnalyzer2::analyze(ifstream &input_file)
       end_i = 1;
       current_state = dfa.get_initial();
       i = 0;
-      // Reset EOF flag
-      eof_flag = false;
       continue;
     }
 
@@ -118,7 +118,7 @@ vector<Symbol> LexicalAnalyzer2::analyze(ifstream &input_file)
     ++i;
     current_state = next_state;
 
-  } while (buffer.size() > 0);
+  } while (!(buffer.empty() && eof_flag)); // Continue until the buffer is empty and the EOF flag is set
 
   // Handle remaining characters
   return symbol_table;
