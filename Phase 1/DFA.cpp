@@ -1,4 +1,6 @@
 #include "DFA.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunqualified-std-cast-call"
 using namespace std;
 
 DFA::DFA(vector<char> input_domain) : input_domain(move(input_domain)), transitions(), initial_state(-1), accepting_states() {}
@@ -52,11 +54,20 @@ void DFA::add_state(int state) {
 void DFA::remove_state(int state, bool reachable) {
   if (!this->contains_state(state)) throw runtime_error("State to be removed does not exist in the DFA.");
   if (initial_state == state) throw runtime_error("Cannot remove the initial state.");
+  // Erase state and its outgoing transitions
   states.erase(state);
   transitions.erase(state);
   accepting_states.erase(state);
+  // If the state is reachable, erase all ingoing transitions
   if (reachable) {
-    for (auto& pair : transitions) pair.second.erase(state);
+    // Loop over state - outgoing transitions
+    for (auto& pair : transitions) {
+        // Loop over input - destination for a fixed source state
+        for (auto& ip_dst : pair.second) {
+            // If destination is the state, erase the whole transition
+            if (ip_dst.second == state) pair.second.erase(ip_dst.first);
+        }
+    }
   }
 }
 
@@ -97,8 +108,10 @@ bool DFA::validate() const {
     auto state_trns = transitions.find(state);
     if (state_trns == transitions.end()) return false;
     for (char symbol : input_domain) {
-      if (state_trns->second.find(symbol) == state_trns->second.end()) 
-        return false;
+      if (state_trns->second.find(symbol) == state_trns->second.end()) {
+          cout << "Missing symbol from DFA: " << symbol << endl;
+          return false;
+      }
     }
   }
   return true;
@@ -113,7 +126,7 @@ bool DFA::contains_state(int state) const {
 int DFA::transition(int state, char symbol) const {
   if (!this->contains_state(state)) throw runtime_error("Invalid source state.");
   auto res_src = transitions.find(state);
-  if (res_src == transitions.end()) return -1; // Some states could have no transition, so insted of throwing an error, return -1.
+  if (res_src == transitions.end()) throw runtime_error("State has no outgoing transitions. DFA is incomplete.");
   auto res_symbol = res_src->second.find(symbol);
   if (res_symbol == res_src->second.end()) throw runtime_error("Unknown input symbol.");
   return res_symbol->second;
@@ -143,7 +156,7 @@ void DFA::print_dfa() const {
   for (auto pair : accepting_states) cout << "\t" << pair.first << " with token " << pair.second << endl;
 
   cout << "Transitions:" << endl;
-  for (auto pair : transitions) {
+  for (const auto& pair : transitions) {
     cout << "\tFrom state " << pair.first << ":" << endl;
     for (auto tr : pair.second) {
       cout << "\t\t---- " << tr.first << " ----> " << tr.second << endl;
@@ -173,101 +186,4 @@ int DFA::get_dead_state() const {
     // there is no dead state if dead_state is -1
     return dead_state;
 }
-
-
-// DFA DFA::minimize() const {
-
-//   unordered_map<int, int> partition;
-//   { // Code block to limit the scope of distinguishable
-//     map<pair<int,int>,bool> distinguishable = this->distinguish_states();
-//     // Collect indistinguishable pairs
-//     int counter = 1, i, j;
-//     for (auto& s_pair : distinguishable) {
-//       if (!s_pair.second) {
-//         i = s_pair.first.first; j = s_pair.first.second;
-//         // See if one of the states is already mapped and map it to the same value
-//         if (partition.find(i) != partition.end())
-//           partition[j] = partition[i];
-//         else if (partition.find(j) != partition.end())
-//           partition[i] = partition[j];
-//         else
-//           partition[i] = partition[j] = counter++; // Otherwise, map both to a new value
-//       }
-//     }
-//     // Map the remaining states to new values
-//     for (int s : this->states) {
-//       if (partition.find(s) == partition.end()) partition[s] = counter++;
-//     }
-//   } // End of code block
-
-//   // Construct and return the new DFA based on the partition
-//   return this->partition_dfa(partition);
-// }
-
-
-// map<pair<int,int>,bool> DFA::distinguish_states() const {
-//   map<pair<int,int>,bool> distinguishable;
-//   // Initial pass: mark accepting & non accepting pairs
-//   int i_final, j_final;
-//   for (auto i = this->states.begin(); i != states.end(); i++) {
-//     for (auto j = next(i); j != this->states.end(); j++) {
-//       i_final = this->accept(*i);
-//       j_final = this->accept(*j);
-//       // Mark pair if one state is accepting and the other is not or both are accepting with different token ids
-//       // Mark the pair where first ID < second ID
-//       if (*i > *j) distinguishable[{*i,*j}] = (i_final != j_final);
-//       else distinguishable[{*j,*i}] = (i_final != j_final);
-//     }
-//   }
-//   // Keep marking pairs until no new pairs are marked
-//   bool changed = true;
-//   int dst_i, dst_j, i, j;
-//   while (changed) {
-//     changed = false;
-//     for (auto s_pair : distinguishable) {
-
-//       if (!s_pair.second) { // If the pair is marked, skip it
-//         for (char symbol : input_domain) {
-//           i = s_pair.first.first; j = s_pair.first.second;
-//           dst_i = this->transition(i, symbol); dst_j = this->transition(j, symbol);
-//           if (dst_i > dst_j) swap(dst_i, dst_j); // Make sure the first destination ID is smaller
-//           if (dst_i != dst_j && distinguishable[{dst_i, dst_j}]) {
-//             distinguishable[{i,j}] = true;
-//             changed = true;
-//           }
-//         }
-//       }
-      
-//     }
-//   }
-//   return distinguishable;
-// }
-
-
-// DFA DFA::partition_dfa(unordered_map<int, int>& partition) const {
-//   // Initialize new states and transitions
-//   unordered_set<int> new_states;
-//   unordered_map<int, unordered_map<char, int>> new_transitions;
-//   unordered_map<int, int> new_accepting_states;
-//   // Loop over each state mapping s = (S, S')
-//   for (auto &s : partition) {
-//     // Add the state mapping to new state if it wasn't added before
-//     new_states.insert(s.second);
-//     // Add the mapped transitions out of the original state
-//     for (auto &tr : this->transitions.at(s.first)){ // all transitions (a,T) from S
-//       new_transitions[s.second][tr.first] = partition[tr.second]; // S' -> T' on input a
-//     }
-//     // If the original state accepts some token, make the mapped state accept the same token
-//     int token = this->accept(s.first);
-//     if (token != -1)
-//       new_accepting_states[s.second] = token;
-//   }
-//   // Construct and return the new DFA
-//   return DFA(
-//     this->input_domain,
-//     move(new_states),
-//     move(new_transitions),
-//     partition[this->initial_state],
-//     new_accepting_states
-//   );
-// }
+#pragma clang diagnostic pop

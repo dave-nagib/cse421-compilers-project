@@ -1,6 +1,5 @@
 #include "../DFA.h"
 #include <iostream>
-#include <bits/stdc++.h>
 using namespace std;
 
 void custom_assert(bool condition, string message) {

@@ -1,0 +1,25 @@
+# ninja log v5
+1	224	7550167167603001	build.ninja	c98d5878f9bf1461
+11	3098	7550099280630867	CMakeFiles/cse421_compilers_project.dir/Phase_1/DFAMinimizer.cpp.obj	f728f6a0d3f72ef5
+40	3197	7550084927387425	CMakeFiles/cse421_compilers_project.dir/Phase_1/test/DFA_test.cpp.obj	f558ce91b76cdc4e
+8	2177	7550132297484062	CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj	fea52f505038b76f
+16	4142	7550084936854445	CMakeFiles/cse421_compilers_project.dir/Phase_1/test/NFA_test.cpp.obj	257f538b4e220257
+4	3255	7550084928056840	CMakeFiles/cse421_compilers_project.dir/Phase_1/test/RegexAnalyzer_test.cpp.obj	18c1de52c8c7f9ac
+34	3371	7550084929230885	CMakeFiles/cse421_compilers_project.dir/Phase_1/test/NFA2DFA_test.cpp.obj	81f440df08e83af6
+29	4004	7550084935553936	CMakeFiles/cse421_compilers_project.dir/Phase_1/test/DFAMinimizer_test.cpp.obj	dc4cba3193bb574e
+4	3197	7550099281621045	CMakeFiles/cse421_compilers_project.dir/Phase_1/DFA.cpp.obj	c1dec63f79acee5
+12	4064	7550165019818370	CMakeFiles/cse421_compilers_project.dir/Phase_1/RegexAnalyzer.cpp.obj	a203f78dcc10f62c
+17	743	7550085096884689	CMakeFiles/cse421_compilers_project.dir/Phase_1/RegularDefToken.cpp.obj	553c33b1ea6db6d1
+23	753	7550085096986122	CMakeFiles/cse421_compilers_project.dir/Phase_1/RegularExpToken.cpp.obj	47c305a18bf2df7c
+6	2687	7550165006142167	CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj	7f089f9fe83f9334
+4	2891	7550085118339242	CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA2DFA.cpp.obj	906e816535a60fcb
+7	3006	7550085119466539	CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA.cpp.obj	4b8c50bafb343d99
+4064	6631	7550165045534957	cse421_compilers_project.exe	75a02c9aac0383cb
+2	275	7550167167603001	build.ninja	c98d5878f9bf1461
+5	2669	7550167195334856	lexical_analyzer_generator.exe	6dab25fc4006af64
+5	2018	7550170865187201	CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj	7f089f9fe83f9334
+2018	4495	7550170889912172	lexical_analyzer_generator.exe	6dab25fc4006af64
+4	2596	7550172504478802	CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj	7f089f9fe83f9334
+2596	5008	7550172528501506	lexical_analyzer_generator.exe	6dab25fc4006af64
+5	2025	7550174470838208	CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj	7f089f9fe83f9334
+2026	4474	7550174495276134	lexical_analyzer_generator.exe	6dab25fc4006af64

@@ -8,7 +8,7 @@ DFAMinimizer::DFAMinimizer(DFA& dfa) : dfa(dfa) {
 map<pair<int, int>, bool> DFAMinimizer::distinguish_states() const {
   map<pair<int,int>,bool> distinguishable;
 
-  // Initial pass: mark accepting & non accepting pairs
+  // Initial pass: mark accepting & non-accepting pairs
   int i_final, j_final;
   auto states = this->dfa.get_states();
 

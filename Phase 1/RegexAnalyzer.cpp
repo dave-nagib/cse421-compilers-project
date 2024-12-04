@@ -7,7 +7,7 @@ RegexAnalyzer::RegexAnalyzer(const string& filePath)
 {
   this->filePath = filePath;
   currentRegularExpId = 0;
-  currentkeyWordId = -1;
+  currentkeyWordId = -10;
   currentRegularDefId = 0;
   currentCharId = -128;
   regularExpTokens = vector<RegularExpToken>();
@@ -542,7 +542,7 @@ RegularExpToken RegexAnalyzer::get_token(int id) const
   return RegularExpToken();
 }
 
-void RegexAnalyzer::parsLexicalRules()
+void RegexAnalyzer::parseLexicalRules()
 {
   ifstream file(this->filePath);
   if (!file.is_open())
@@ -747,7 +747,7 @@ void RegexAnalyzer::printReservedSymbols()
 
 NFA RegexAnalyzer::RegexToNFA()
 {
-  parsLexicalRules();
+    parseLexicalRules();
   resolveRegularDefToken();
   resolveRegularExpToken();
   printAll();

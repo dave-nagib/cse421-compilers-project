@@ -43,7 +43,7 @@ class RegexAnalyzer {
     /** check if the char is an english char */
     bool isEnglishChar(char c);
     /** Parses the lexical rules from a file. */
-    void parsLexicalRules();
+    void parseLexicalRules();
     /** resolve the regular definition token 
      * by replacing tokens and expressions from the regex
      * with their corresponding char id

@@ -1,1 +1,2 @@
-relop: \=\= | !\= | > | >\= | < | <\=
+firsttoken: (a-z)+
+{dcba}
