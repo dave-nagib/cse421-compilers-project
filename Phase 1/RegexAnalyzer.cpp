@@ -418,7 +418,6 @@ void RegexAnalyzer::resolveRegularExpToken()
         inTokenKeywords.push_back(charToken);
         string inTokenName = accumulate(inTokenKeywords.begin(), inTokenKeywords.end(), string(""));
         inTokenKeywords.clear();
-        cout << inTokenName << endl;
         RegularDefToken *inToken = &get_defTokenRef_by_name(inTokenName);
         if (inToken == nullptr) {
           throw std::runtime_error("inToken is nullptr.");
@@ -781,7 +780,6 @@ NFA RegexAnalyzer::RegularExpTokenToNFA(RegularExpToken token)
   {
     if (keywords[i] < 0)
     {
-      cout << "char: " << keywords[i] << endl;
       int intialState = stateCounter++;
       int acceptingState = stateCounter++;
       NFA defNFA = NFA();

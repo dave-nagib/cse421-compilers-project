@@ -30,6 +30,7 @@ LexicalAnalyzer::LexicalAnalyzer(const string &rules_file_path)
   DFAMinimizer minimizer(dfa);
   DFA minimized_dfa = minimizer.minimize();
   tokens[-1] = "ERROR";
+  minimized_dfa.print_dfa();
 
   // Assign fields
   this->dfa = std::move(minimized_dfa);

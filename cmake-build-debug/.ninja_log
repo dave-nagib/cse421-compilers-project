@@ -20,3 +20,6 @@
 53	1894	7550409071753901	CMakeFiles/cse421_compilers_project.dir/Phase_1/RegularDefToken.cpp.obj	377b6160f2d0e52b
 20	4528	7550409071421659	CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj	357a583132fb3ac8
 4528	10217	7550409116505604	lexical_analyzer_generator.exe	26fe4f1f17b601cf
+8	2738	7550420415113961	CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj	357a583132fb3ac8
+22	3520	7550420415254442	CMakeFiles/cse421_compilers_project.dir/Phase_1/RegexAnalyzer.cpp.obj	c17f1fca1771ab7f
+3520	5961	7550420450226697	lexical_analyzer_generator.exe	26fe4f1f17b601cf
