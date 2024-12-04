@@ -1,16 +1,10 @@
-"C:\Program Files\JetBrains\CLion 2023.2.2\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2023.2.2/bin/ninja/win/x64/ninja.exe" -G Ninja -S "D:\College\Level 4\Fall Semester\Compilers\Project\cse421-compilers-project" -B "D:\College\Level 4\Fall Semester\Compilers\Project\cse421-compilers-project\cmake-build-debug"
--- The C compiler identification is GNU 13.1.0
--- The CXX compiler identification is GNU 13.1.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: C:/Program Files/JetBrains/CLion 2023.2.2/bin/mingw/bin/gcc.exe - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: C:/Program Files/JetBrains/CLion 2023.2.2/bin/mingw/bin/g++.exe - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- Configuring done (4.5s)
--- Generating done (0.0s)
--- Build files have been written to: D:/College/Level 4/Fall Semester/Compilers/Project/cse421-compilers-project/cmake-build-debug
+"C:\Users\Abdulla S.Talha\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Users/Abdulla S.Talha/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe" "-DGraphviz_DIR=C:/Program Files/Graphviz" "E:/college/level-4/1st term/Compilers/Project/cse421-compilers-projectE:/college/level-4/1st term/Compilers/Project/cse421-compilers-project" -G Ninja -S "E:\college\level-4\1st term\Compilers\Project\cse421-compilers-project" -B "E:\college\level-4\1st term\Compilers\Project\cse421-compilers-project\cmake-build-debug"
+CMake Warning:
+  Ignoring extra path from command line:
+
+   "E:/college/level-4/1st term/Compilers/Project/cse421-compilers-projectE:/college/level-4/1st term/Compilers/Project/cse421-compilers-project"
+
+
+-- Configuring done (0.6s)
+-- Generating done (0.3s)
+-- Build files have been written to: E:/college/level-4/1st term/Compilers/Project/cse421-compilers-project/cmake-build-debug

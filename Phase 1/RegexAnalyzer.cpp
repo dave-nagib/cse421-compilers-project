@@ -564,9 +564,9 @@ void RegexAnalyzer::parseLexicalRules()
         { // Check wordSize > 0 to ensure processing
           // Create and store a RegularExpToken
           string keywordstring = string(keywordChars.begin(), keywordChars.end());
-          for (int i = 0; i < keywordstring.size(); i++)
+          for (char & keywordChar : keywordChars)
           {
-            keywordChars[i] = charTokens[keywordstring[i]];
+            keywordChar = charTokens[keywordChar];
           }
           RegularExpToken regToken = RegularExpToken(currentkeyWordId--, keywordstring, keywordstring, keywordChars);
           keywords.push_back(keywordstring);
@@ -580,15 +580,19 @@ void RegexAnalyzer::parseLexicalRules()
           continue;
         }
         keywordChars.push_back(originalKeywords[i]); // Store characters
-        charTokens[originalKeywords[i]] = currentCharId++;
+        //check if the char exists in the charTokens map before adding it to the keywordChars
+        if (charTokens.find(originalKeywords[i]) == charTokens.end())
+        {
+          charTokens[originalKeywords[i]] = currentCharId++;
+        }
         wordSize++;
         if (i == originalKeywords.size() - 1)
         { // Process the last keyword
           string keywordstring = string(keywordChars.begin(), keywordChars.end());
           // replace evrey char in the keyword with its id
-          for (int i = 0; i < keywordstring.size(); i++)
+          for (char & keywordChar : keywordChars)
           {
-            keywordChars[i] = charTokens[keywordstring[i]];
+            keywordChar = charTokens[keywordChar];
           }
           RegularExpToken regToken = RegularExpToken(currentkeyWordId--, keywordstring, keywordstring, keywordChars);
           keywords.push_back(keywordstring);

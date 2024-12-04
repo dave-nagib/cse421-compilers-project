@@ -5,6 +5,7 @@
 #include<vector>
 #include<bits/stdc++.h>
 
+
 class DFA {
   private:
     std::vector<char> input_domain;
@@ -18,6 +19,8 @@ class DFA {
     // DFA partition_dfa(std::unordered_map<int, int>& partition) const; 
   public:
     /** Default constructor */
+    DFA() = default;
+    /** Constructor that initializes the DFA with an input domain */
     DFA(std::vector<char> input_domain);
     /** DI constructor */
     DFA(

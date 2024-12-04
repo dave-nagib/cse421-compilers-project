@@ -186,4 +186,6 @@ int DFA::get_dead_state() const {
     // there is no dead state if dead_state is -1
     return dead_state;
 }
+
+
 #pragma clang diagnostic pop

@@ -2,14 +2,8 @@
 #define RegexAnalyzer_H
 #include <string>
 #include <vector>
-#include <queue>
-#include <algorithm>
-#include <cassert>
-#include <numeric>
-#include <iostream>
 #include <fstream>
 #include <unordered_map>
-#include <unordered_set>
 #include "RegularExpToken.h"
 #include "RegularDefToken.h"
 #include "NFA.h"
@@ -41,7 +35,7 @@ class RegexAnalyzer {
     /** The Reserved Symbols of the regex. */
     std::vector<std::string> reservedSymbols;
     /** check if the char is an english char */
-    bool isEnglishChar(char c);
+    static bool isEnglishChar(char c);
     /** Parses the lexical rules from a file. */
     void parseLexicalRules();
     /** resolve the regular definition token 
@@ -66,7 +60,7 @@ class RegexAnalyzer {
      * replacing consecutive spaces with a single space
      * removing extra spaces and spaces before and after non-english characters
     */
-    std::string cleanRHS(const std::string& input);
+    static std::string cleanRHS(const std::string& input);
 
 
 

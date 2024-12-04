@@ -1,14 +1,8 @@
-#include "RegexAnalyzer.h"
-#include "NFA.h"
-#include "NFA2DFA.h"
-#include "DFA.h"
-#include "DFAMinimizer.h"
-#include "LexicalAnalyzer.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <unordered_map>
 #include <string>
+#include "LexicalAnalyzer.h"
 
 int main(int argc, char *argv[]) {
     std::string rules_file_path;
@@ -19,28 +13,8 @@ int main(int argc, char *argv[]) {
         rules_file_path = argv[1];
     }
 
-    // use absolute path for Test Illustrations\lexical_rules_test1.txt
-    RegexAnalyzer regex_analyzer(rules_file_path);
-    NFA nfa = regex_analyzer.RegexToNFA();
-
-    // Use std::unordered_map and std::vector explicitly
-    std::unordered_map<int, std::string> tokens = regex_analyzer.getTokensIdNameMap();
-    std::unordered_map<char, char> charTokens = regex_analyzer.getCharTokensMap();
-
-    NFA2DFA converter;
-    std::vector<char> input_domain;
-    for (auto const &pair : charTokens) {
-        input_domain.push_back(pair.second);
-    }
-    DFA dfa = converter.convert(nfa, input_domain);
-
-    DFAMinimizer minimizer(dfa);
-    DFA minimized_dfa = minimizer.minimize();
-    std::cout << "\n";
-    //minimized_dfa.print_dfa();
-
-    tokens[-1] = "ERROR";
-    LexicalAnalyzer lexical_analyzer(minimized_dfa, charTokens, tokens);
+   // Initialize the lexical analyzer based on the rules file
+    LexicalAnalyzer lexical_analyzer(rules_file_path);
 
     std::string input_file_path;
     if (argc != 3) {

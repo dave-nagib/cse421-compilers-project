@@ -1,8 +1,45 @@
 #include "LexicalAnalyzer.h"
 using namespace std;
 
+
+
+
+/** Constructor */
+LexicalAnalyzer::LexicalAnalyzer(const string &rules_file_path)
+{
+  // Initialize the DFA, mapper, and token names
+  ifstream rules_file(rules_file_path);
+  if (!rules_file.is_open()) {
+    throw runtime_error("Could not open the rules file.");
+  }
+  // use absolute path for Test Illustrations\lexical_rules_test1.txt
+  RegexAnalyzer regex_analyzer(rules_file_path);
+  NFA nfa = regex_analyzer.RegexToNFA();
+
+  // Use std::unordered_map and std::vector explicitly
+  std::unordered_map<int, std::string> tokens = regex_analyzer.getTokensIdNameMap();
+  std::unordered_map<char, char> charTokens = regex_analyzer.getCharTokensMap();
+
+  NFA2DFA converter;
+  std::vector<char> input_domain;
+  for (auto const &pair: charTokens) {
+    input_domain.push_back(pair.second);
+  }
+  DFA dfa = converter.convert(nfa, input_domain);
+
+  DFAMinimizer minimizer(dfa);
+  DFA minimized_dfa = minimizer.minimize();
+  tokens[-1] = "ERROR";
+
+  // Assign fields
+  this->dfa = std::move(minimized_dfa);
+  this->token_names = std::move(tokens);
+  this->mapper = std::move(charTokens);
+
+}
+
 /** Method to fill the buffer. Returns true if there are no more characters in the input stream. */
-bool fill_buffer(std::vector<char> &buffer, std::ifstream &ip)
+bool LexicalAnalyzer::fill_buffer(vector<char> &buffer, ifstream &ip)
 {
   char c;
   int counter = 0;
@@ -19,23 +56,6 @@ bool fill_buffer(std::vector<char> &buffer, std::ifstream &ip)
   return counter == 0;
 }
 
-/** Constructor */
-LexicalAnalyzer::LexicalAnalyzer(
-    const DFA &dfa, 
-    const unordered_map<char,char> &mapper,
-    const unordered_map<int, string> &token_names
-  ) : dfa(dfa), mapper(mapper), token_names(token_names) 
-{
-  if (token_names.find(-1) != token_names.end() && token_names.at(-1) != "ERROR") 
-  {
-    throw runtime_error("Token names map must contain an ERROR token.");
-  }
-  for (auto const &pair : dfa.get_accepting())
-  {
-    if (token_names.find(pair.second) == token_names.end()) 
-    throw runtime_error("Token names map must contain all token IDs in the DFA.");
-  }
-}
 
 /** Method to analyze input and build the symbol table */
 vector<Symbol> LexicalAnalyzer::analyze(ifstream &input_file)
