@@ -74,7 +74,7 @@ class DFA {
     // DFA minimize() const;
 
     /** Function to print the DFA components for debugging */
-    void print_dfa() const;
+    void print_dfa(std::unordered_map<char, char>, std::unordered_map<int, std::string>) const;
 };
 
 #endif

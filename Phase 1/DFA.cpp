@@ -139,7 +139,7 @@ int DFA::accept(int state) const {
 }
 
 
-void DFA::print_dfa() const {
+void DFA::print_dfa(unordered_map<char, char> tokenChars, unordered_map<int, string> tokens) const {
   cout << "DFA components:\n" << endl;
 
   cout << "Input domain: ";
@@ -153,13 +153,21 @@ void DFA::print_dfa() const {
   cout << "Initial state: " << initial_state << endl;
 
   cout << "Accepting states:\n";
-  for (auto pair : accepting_states) cout << "\t" << pair.first << " with token " << pair.second << endl;
+  for (auto pair : accepting_states) cout << "\t" << pair.first << " with token id " << pair.second << " token " <<tokens.at(accepting_states.at(pair.first)) << endl;
 
   cout << "Transitions:" << endl;
   for (const auto& pair : transitions) {
-    cout << "\tFrom state " << pair.first << ":" << endl;
+    if (accepting_states.find(pair.first) != accepting_states.end()){
+        cout << "\tFrom state " << pair.first  << " Accepting class with token number " << tokens.at(accepting_states.at(pair.first)) << ":" << endl;
+    }else
+      cout << "\tFrom state " << pair.first << ":" << endl;
     for (auto tr : pair.second) {
-      cout << "\t\t---- " << tr.first << " ----> " << tr.second << endl;
+      if (accepting_states.find(tr.second) != accepting_states.end()){
+
+          cout << "\t\t---- " << tokenChars.at(tr.first) << " ----> " << tr.second << " token: " << tokens.at(accepting_states.at(tr.second)) << endl;
+          continue;
+      }
+        cout << "\t\t---- " << tokenChars.at(tr.first) << " ----> " << tr.second << endl;
     }
   }
 }

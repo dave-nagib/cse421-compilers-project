@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     }
 
    // Initialize the lexical analyzer based on the rules file
-    LexicalAnalyzer lexical_analyzer(rules_file_path);
+    LexicalAnalyzer lexical_analyzer("F:\\NewProjects\\compilers\\compiler_lexical\\Phase 1\\test\\Test Illustrations\\lexical_rules_test1.txt");
 
     std::string input_file_path;
     if (argc != 3) {
@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
         input_file_path = argv[2];
     }
 
-    std::ifstream input_file(input_file_path, std::ios::binary);
+    std::ifstream input_file("F:\\NewProjects\\compilers\\compiler_lexical\\Phase 1\\test\\Test Illustrations\\sample_program_test2.txt", std::ios::binary);
     std::vector<Symbol> symbol_table = lexical_analyzer.analyze(input_file);
 
     std::cout << "Symbol Table:" << std::endl;
