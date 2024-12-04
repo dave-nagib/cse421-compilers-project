@@ -680,7 +680,7 @@ void RegexAnalyzer::parseLexicalRules()
 
 void RegexAnalyzer::printRegularExpTokens()
 {
-  cout << "Regular Expression Tokens:" << endl;
+  cout << "\nRegular Expression Tokens:" << endl;
   // print the regular expression tokens in the form of id, name, regex and keywords
   for (RegularExpToken token : regularExpTokens)
   {
@@ -750,7 +750,7 @@ void RegexAnalyzer::printReservedSymbols()
 
 NFA RegexAnalyzer::RegexToNFA()
 {
-    parseLexicalRules();
+  parseLexicalRules();
   resolveRegularDefToken();
   resolveRegularExpToken();
   printAll();
