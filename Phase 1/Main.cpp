@@ -6,17 +6,15 @@
 
 int main(int argc, char *argv[]) {
     std::string rules_file_path, output_file_path;
-    if (argc != 4) {
+    if (argc != 3) {
         std::cout << "Enter the path to the lexical rules file: ";
         std::cin >> rules_file_path;
-        std::cout << "\nEnter the path to the output file: ";
-        std::cin >> output_file_path;
     } else {
         rules_file_path = argv[1];
-        output_file_path = argv[2];
     }
 
-   // Initialize the lexical analyzer based on the rules file
+    // Initialize the lexical analyzer based on the rules file
+    output_file_path = rules_file_path.substr(0, rules_file_path.find_last_of('.')) + "_minimized_DFA.txt";  
     LexicalAnalyzer lexical_analyzer(rules_file_path, output_file_path);
     while (true)
     {
@@ -26,7 +24,7 @@ int main(int argc, char *argv[]) {
             std::cout << "Enter the path to the input file: ";
             std::cin >> input_file_path;
         } else {
-            input_file_path = argv[3];
+            input_file_path = argv[2];
         }
         if (input_file_path == "exit") {
             break;
