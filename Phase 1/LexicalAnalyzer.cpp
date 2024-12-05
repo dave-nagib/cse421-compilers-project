@@ -20,6 +20,33 @@ LexicalAnalyzer::LexicalAnalyzer(const string &rules_file_path)
   std::unordered_map<int, std::string> tokens = regex_analyzer.getTokensIdNameMap();
   std::unordered_map<char, char> charTokens = regex_analyzer.getCharTokensMap();
 
+  //order the tokens by id
+  std::vector<std::pair<int, std::string>> orderedTokens(tokens.begin(), tokens.end());
+  std::sort(orderedTokens.begin(), orderedTokens.end(), [](const std::pair<int, std::string> &a, const std::pair<int, std::string> &b) {
+    return a.first < b.first;
+  });
+
+
+  // Take the rules file path and add _symbol_table before the file extension
+  std::string symbol_table_file_path = rules_file_path.substr(0, rules_file_path.find_last_of('.')) + "_Token_IDs.txt";
+  std::ofstream symbol_table_file(symbol_table_file_path);
+
+  if (symbol_table_file.is_open()) {
+    // Write the header
+    symbol_table_file << std::left << std::setw(10) << "ID" << "Token" << std::endl;
+    symbol_table_file << std::string(30, '-') << std::endl; // Separator line
+
+    // Write the table rows
+    for (auto const &pair: orderedTokens) {
+      symbol_table_file << std::left << std::setw(10) << pair.first << pair.second << std::endl;
+    }
+    // Close the symbol table file
+    symbol_table_file.close();
+    std::cout << "Symbol table written to " << symbol_table_file_path << std::endl;
+  } else {
+    std::cerr << "Failed to open file: " << symbol_table_file_path << std::endl;
+  }
+
   NFA2DFA converter;
   std::vector<char> input_domain;
   for (auto const &pair: charTokens) {
