@@ -42,7 +42,7 @@ LexicalAnalyzer::LexicalAnalyzer(const string &rules_file_path, const std::strin
     }
     // Close the symbol table file
     symbol_table_file.close();
-    std::cout << "Symbol table written to " << symbol_table_file_path << std::endl;
+    std::cout << "Tokens and IDs written to " << symbol_table_file_path << std::endl;
   } else {
     std::cerr << "Failed to open file: " << symbol_table_file_path << std::endl;
   }
@@ -128,7 +128,7 @@ vector<Symbol> LexicalAnalyzer::analyze(ifstream &input_file)
 
     // If this inputs leads to a dead state, this means that there is no further tokens to be found
     // on starting from the current start character. We either accept some token or mark an error.
-    if (next_state == dead_state) 
+    if (next_state == dead_state)
     {
       symbol_table.push_back({
         string(buffer.begin(), buffer.begin() + end_i), // Lexeme, will be one character only if no token was found (end_i = 1)

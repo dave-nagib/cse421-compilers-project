@@ -216,7 +216,7 @@ void DFA::print_dfa(unordered_map<char, char> tokenChars, unordered_map<int, str
         }
     }
     output_file.close();
-    court << "DFA written to " << output_file_path << endl;
+    cout << "DFA written to " << output_file_path << endl;
 }
 
 int DFA::get_dead_state() const {

@@ -29,23 +29,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8955b080-252b-49e8-91d8-f5d68556844b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Phase 1/Compilers Project Phase 1 Report.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Phase 1/DFA.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Phase 1/DFA.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Phase 1/LexicalAnalyzer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Phase 1/LexicalAnalyzer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Phase 1/Main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Phase 1/Main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2024-12-04T18-40-32-0993.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Phase 1/test/Test Illustrations/lexical_rules_test12.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/DFA.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/DFA.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/DFAMinimizer.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/DFAMinimizer.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA2DFA.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA2DFA.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/RegexAnalyzer.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/RegexAnalyzer.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/lexical_analyzer_generator.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lexical_analyzer_generator.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lexical_rules_test1_symbol_table.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/sample_program_test2.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +60,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/dave-nagib/cse421-compilers-project.git&quot;,
+    &quot;accountId&quot;: &quot;c874082c-628c-4bc1-babe-ab0ed63bcd78&quot;
+  }
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -66,6 +83,9 @@
     <option name="ide" value="CLion" />
     <option name="majorVersion" value="2023" />
     <option name="minorVersion" value="2.2" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -129,7 +149,7 @@
       <updated>1733252263482</updated>
       <workItem from="1733252264562" duration="18921000" />
       <workItem from="1733326586898" duration="15939000" />
-      <workItem from="1733404133355" duration="2959000" />
+      <workItem from="1733404133355" duration="9492000" />
     </task>
     <servers />
   </component>
@@ -140,5 +160,16 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticReloadCMake value="true" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
