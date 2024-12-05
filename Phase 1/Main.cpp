@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     if (argc != 4) {
         std::cout << "Enter the path to the lexical rules file: ";
         std::cin >> rules_file_path;
-        std::cout << "\nEnter the path to the lexical rules file: ";
+        std::cout << "\nEnter the path to the output file: ";
         std::cin >> output_file_path;
     } else {
         rules_file_path = argv[1];
