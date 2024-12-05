@@ -26,6 +26,6 @@ class LexicalAnalyzer
   public:
     /** default constructor */
     LexicalAnalyzer();
-    LexicalAnalyzer(const std::string& rules_file_path);
+    LexicalAnalyzer(const std::string& rules_file_path, const std::string& output_file_path);
     std::vector<Symbol> analyze(std::ifstream &input_file);
 };

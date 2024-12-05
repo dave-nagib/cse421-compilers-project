@@ -5,16 +5,19 @@
 #include "LexicalAnalyzer.h"
 
 int main(int argc, char *argv[]) {
-    std::string rules_file_path;
-    if (argc != 3) {
+    std::string rules_file_path, output_file_path;
+    if (argc != 4) {
         std::cout << "Enter the path to the lexical rules file: ";
         std::cin >> rules_file_path;
+        std::cout << "\nEnter the path to the lexical rules file: ";
+        std::cin >> output_file_path;
     } else {
         rules_file_path = argv[1];
+        output_file_path = argv[2];
     }
 
    // Initialize the lexical analyzer based on the rules file
-    LexicalAnalyzer lexical_analyzer(rules_file_path);
+    LexicalAnalyzer lexical_analyzer(rules_file_path, output_file_path);
     while (true)
     {
         std::cout << "To exit, type 'exit'." << std::endl;
@@ -23,7 +26,7 @@ int main(int argc, char *argv[]) {
             std::cout << "Enter the path to the input file: ";
             std::cin >> input_file_path;
         } else {
-            input_file_path = argv[2];
+            input_file_path = argv[3];
         }
         if (input_file_path == "exit") {
             break;

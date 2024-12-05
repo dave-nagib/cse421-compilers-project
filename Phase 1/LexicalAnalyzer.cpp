@@ -5,7 +5,7 @@ using namespace std;
 
 
 /** Constructor */
-LexicalAnalyzer::LexicalAnalyzer(const string &rules_file_path)
+LexicalAnalyzer::LexicalAnalyzer(const string &rules_file_path, const std::string& output_file_path)
 {
   // Initialize the DFA, mapper, and token names
   ifstream rules_file(rules_file_path);
@@ -61,7 +61,7 @@ LexicalAnalyzer::LexicalAnalyzer(const string &rules_file_path)
     for (auto i: charTokens) {
         tokenChars[i.second] = i.first;
     }
-  minimized_dfa.print_dfa(tokenChars, tokens);
+  minimized_dfa.print_dfa(tokenChars, tokens, output_file_path);
 
   // Assign fields
   this->dfa = std::move(minimized_dfa);

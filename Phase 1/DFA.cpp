@@ -172,6 +172,51 @@ void DFA::print_dfa(unordered_map<char, char> tokenChars, unordered_map<int, str
   }
 }
 
+void DFA::print_dfa(unordered_map<char, char> tokenChars, unordered_map<int, string> tokens, const string& output_file_path) const {
+    ofstream output_file(output_file_path);
+    if (!output_file.is_open()) {
+        cerr << "Error: Could not open file "
+             << output_file_path
+             << " for writing." << endl;
+        return;
+    }
+
+    output_file << "DFA components:\n" << endl;
+
+    output_file << "Input domain: ";
+    for (char symbol: input_domain) output_file << tokenChars.at(symbol) << " ";
+    output_file << endl;
+
+    output_file << "States: ";
+    for (int state: states) output_file << state << " ";
+    output_file << endl;
+
+    output_file << "Initial state: " << initial_state << endl;
+
+    output_file << "Accepting states:\n";
+    for (auto pair: accepting_states)
+        output_file << "\t" << pair.first << " with token id " << pair.second << " token "
+                    << tokens.at(accepting_states.at(pair.first)) << endl;
+
+    output_file << "Transitions:" << endl;
+    for (const auto &pair: transitions) {
+        if (accepting_states.find(pair.first) != accepting_states.end()) {
+            output_file << "\tFrom state " << pair.first << " Accepting class with token number "
+                        << tokens.at(accepting_states.at(pair.first)) << ":" << endl;
+        } else
+            output_file << "\tFrom state " << pair.first << ":" << endl;
+        for (auto tr: pair.second) {
+            if (accepting_states.find(tr.second) != accepting_states.end()) {
+
+                output_file << "\t\t---- " << tokenChars.at(tr.first) << " ----> " << tr.second << " token: "
+                            << tokens.at(accepting_states.at(tr.second)) << endl;
+                continue;
+            }
+            output_file << "\t\t---- " << tokenChars.at(tr.first) << " ----> " << tr.second << endl;
+        }
+    }
+}
+
 int DFA::get_dead_state() const {
     int dead_state = -1;
     for (int state : states) {
@@ -194,6 +239,8 @@ int DFA::get_dead_state() const {
     // there is no dead state if dead_state is -1
     return dead_state;
 }
+
+
 
 
 #pragma clang diagnostic pop

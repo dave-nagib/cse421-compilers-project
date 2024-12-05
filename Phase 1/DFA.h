@@ -75,6 +75,8 @@ class DFA {
 
     /** Function to print the DFA components for debugging */
     void print_dfa(std::unordered_map<char, char>, std::unordered_map<int, std::string>) const;
+    /** Function to write the DFA components in a file */
+    void print_dfa(std::unordered_map<char, char>, std::unordered_map<int, std::string>, const std::string&) const;
 };
 
 #endif
