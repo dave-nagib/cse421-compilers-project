@@ -119,8 +119,12 @@ vector<Symbol> LexicalAnalyzer::analyze(ifstream &input_file)
     c = (i < buffer.size())? buffer.at(i) : '\0';
     if (eof_flag || c == ' ')
         next_state = dead_state;
-    else
-        next_state = dfa.transition(current_state, this->mapper.at(c));
+    else {
+        if (this->mapper.find(c) == this->mapper.end()) {
+            next_state = dead_state;
+        }else
+            next_state = dfa.transition(current_state, this->mapper.at(c));
+    }
 
     // If this inputs leads to a dead state, this means that there is no further tokens to be found
     // on starting from the current start character. We either accept some token or mark an error.
