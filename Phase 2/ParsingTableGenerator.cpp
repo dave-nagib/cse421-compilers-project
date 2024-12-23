@@ -1,8 +1,8 @@
-#include "FirstFollowGenerator.h"
+#include "ParsingTableGenerator.h"
 using namespace std;
 
 // Compute FIRST set for a single symbol
-SymbolSet FirstFollowGenerator::computeFirst(const string& symbol) {
+SymbolSet ParsingTableGenerator::computeFirst(const string& symbol) {
     // If we've already computed FIRST for this symbol, return it
     if (firstSets.find(symbol) != firstSets.end()) {
         return firstSets[symbol];
@@ -25,7 +25,7 @@ SymbolSet FirstFollowGenerator::computeFirst(const string& symbol) {
 }
 
 // Compute FIRST set for a sequence of symbols
-SymbolSet FirstFollowGenerator::computeFirstOfSequence(const vector<string>& sequence) {
+SymbolSet ParsingTableGenerator::computeFirstOfSequence(const vector<string>& sequence) {
     SymbolSet result;
     bool allCanBeEmpty = true;
 
@@ -53,14 +53,14 @@ SymbolSet FirstFollowGenerator::computeFirstOfSequence(const vector<string>& seq
 }
 
 // Compute FOLLOW sets for all non-terminals
-void FirstFollowGenerator::computeFollow() {
+void ParsingTableGenerator::computeFollow() {
     // Initialize FOLLOW sets
     for (const auto& entry : grammar) {
         followSets[entry.first] = SymbolSet();
     }
 
     // Add $ to FOLLOW(StartSymbol)
-    followSets[startSymbol].insert("$");
+    followSets[startSymbol].insert(END);
 
     // Repeat until no changes are made
     bool changed;
@@ -76,7 +76,7 @@ void FirstFollowGenerator::computeFollow() {
     } while (changed);
 }
 
-bool FirstFollowGenerator::updateFollow(const string &lhs, const vector<string> &rhs) {
+bool ParsingTableGenerator::updateFollow(const string &lhs, const vector<string> &rhs) {
     bool updated;
     for (long i = 0; i < rhs.size(); i++) {
         // Only compute FOLLOW for non-terminals
@@ -120,8 +120,54 @@ bool FirstFollowGenerator::updateFollow(const string &lhs, const vector<string> 
     return updated;
 }
 
+// Compute the parsing table
+void ParsingTableGenerator::computeTable() {
+
+    // Compute FIRST and FOLLOW sets for all symbols if not already computed
+    if (firstSets.empty()) getFirstSets();
+    if (followSets.empty()) computeFollow();
+    // Initialize the table with dimensions
+    table.initializeTable(nonTerminals.size(), terminals.size());
+
+    try {
+        // For each production rule A -> alpha
+        for (const auto &symbolAndProductions: grammar) {
+            for (const auto &production: symbolAndProductions.second) {
+                updateParsingTable(symbolAndProductions.first, production);
+            }
+        }
+    } catch (const std::invalid_argument& e) {
+        // If a production rule already exists, then the grammar is not LL(1)
+        throw std::invalid_argument("Grammar is not LL(1)");
+    }
+}
+
+void ParsingTableGenerator::updateParsingTable(const string &A, const vector<string> &alpha) {
+
+    // For each non-epsilon terminal a in FIRST(alpha), add alpha to the table at [A, a]
+    SymbolSet alphaFirst = computeFirstOfSequence(alpha);
+    for (const auto &a: alphaFirst) {
+        if (a != EPSILON) {
+            table.addProduction(A, a, alpha);
+        }
+    }
+
+    // If epsilon is in FIRST(alpha), add alpha to the table at [A, b] for each terminal b in FOLLOW(A)
+    if (alphaFirst.find(EPSILON) != alphaFirst.end()) {
+        for (const auto &b: followSets.at(A)) {
+            table.addProduction(A, b, alpha);
+        }
+    }
+
+    // If epsilon is in FIRST(alpha) and $ is in FOLLOW(A), add alpha to the table at [A, $]
+    if (alphaFirst.find(EPSILON) != alphaFirst.end() &&
+        followSets.at(A).find(END) != followSets.at(A).end()) {
+        table.addProduction(A, END, alpha);
+    }
+}
+
 // Getters for the computed sets
-const unordered_map<string, SymbolSet>& FirstFollowGenerator::getFirstSets() {
+const unordered_map<string, SymbolSet>& ParsingTableGenerator::getFirstSets() {
     // Compute FIRST sets for all symbols if not already computed
     for (const auto& entry : grammar) {
         computeFirst(entry.first);
@@ -129,9 +175,16 @@ const unordered_map<string, SymbolSet>& FirstFollowGenerator::getFirstSets() {
     return firstSets;
 }
 
-const unordered_map<string, SymbolSet>& FirstFollowGenerator::getFollowSets() {
+const unordered_map<string, SymbolSet>& ParsingTableGenerator::getFollowSets() {
     if (followSets.empty()) {
         computeFollow();
     }
     return followSets;
+}
+
+ParsingTable ParsingTableGenerator::getTable() {
+    if (!table.isInitialized()) {
+        computeTable();
+    }
+    return table;
 }
