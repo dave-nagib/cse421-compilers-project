@@ -1,0 +1,17 @@
+int
+id
+assign
+num
+ERROR
+id
+;
+Symbol Table:
+Lexeme    Token ID
+------------------------------
+int       int
+x         id
+=         assign
+70        num
+&         ERROR
+y         id
+;         ;

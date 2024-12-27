@@ -5,6 +5,6 @@ CMake Warning:
    "E:/college/level-4/1st term/Compilers/Project/cse421-compilers-projectE:/college/level-4/1st term/Compilers/Project/cse421-compilers-project"
 
 
--- Configuring done (0.6s)
--- Generating done (0.2s)
+-- Configuring done (0.2s)
+-- Generating done (0.1s)
 -- Build files have been written to: E:/college/level-4/1st term/Compilers/Project/cse421-compilers-project/cmake-build-debug

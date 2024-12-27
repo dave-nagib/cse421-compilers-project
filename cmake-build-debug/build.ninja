@@ -70,13 +70,6 @@ build CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj: C
   OBJECT_DIR = CMakeFiles\cse421_compilers_project.dir
   OBJECT_FILE_DIR = CMakeFiles\cse421_compilers_project.dir\Phase_1
 
-build CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj: CXX_COMPILER__cse421_compilers_project_unscanned_Debug E$:/college/level-4/1st$ term/Compilers/Project/cse421-compilers-project/Phase$ 1/Main.cpp || cmake_object_order_depends_target_cse421_compilers_project
-  DEP_FILE = CMakeFiles\cse421_compilers_project.dir\Phase_1\Main.cpp.obj.d
-  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  INCLUDES = -I"E:/college/level-4/1st term/Compilers/Project/cse421-compilers-project/Phase 1"
-  OBJECT_DIR = CMakeFiles\cse421_compilers_project.dir
-  OBJECT_FILE_DIR = CMakeFiles\cse421_compilers_project.dir\Phase_1
-
 build CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA.cpp.obj: CXX_COMPILER__cse421_compilers_project_unscanned_Debug E$:/college/level-4/1st$ term/Compilers/Project/cse421-compilers-project/Phase$ 1/NFA.cpp || cmake_object_order_depends_target_cse421_compilers_project
   DEP_FILE = CMakeFiles\cse421_compilers_project.dir\Phase_1\NFA.cpp.obj.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
@@ -112,23 +105,44 @@ build CMakeFiles/cse421_compilers_project.dir/Phase_1/RegularExpToken.cpp.obj: C
   OBJECT_DIR = CMakeFiles\cse421_compilers_project.dir
   OBJECT_FILE_DIR = CMakeFiles\cse421_compilers_project.dir\Phase_1
 
+build CMakeFiles/cse421_compilers_project.dir/Phase_2/testing.cpp.obj: CXX_COMPILER__cse421_compilers_project_unscanned_Debug E$:/college/level-4/1st$ term/Compilers/Project/cse421-compilers-project/Phase$ 2/testing.cpp || cmake_object_order_depends_target_cse421_compilers_project
+  DEP_FILE = CMakeFiles\cse421_compilers_project.dir\Phase_2\testing.cpp.obj.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -I"E:/college/level-4/1st term/Compilers/Project/cse421-compilers-project/Phase 1"
+  OBJECT_DIR = CMakeFiles\cse421_compilers_project.dir
+  OBJECT_FILE_DIR = CMakeFiles\cse421_compilers_project.dir\Phase_2
+
+build CMakeFiles/cse421_compilers_project.dir/Phase_2/ParsingTableGenerator.cpp.obj: CXX_COMPILER__cse421_compilers_project_unscanned_Debug E$:/college/level-4/1st$ term/Compilers/Project/cse421-compilers-project/Phase$ 2/ParsingTableGenerator.cpp || cmake_object_order_depends_target_cse421_compilers_project
+  DEP_FILE = CMakeFiles\cse421_compilers_project.dir\Phase_2\ParsingTableGenerator.cpp.obj.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -I"E:/college/level-4/1st term/Compilers/Project/cse421-compilers-project/Phase 1"
+  OBJECT_DIR = CMakeFiles\cse421_compilers_project.dir
+  OBJECT_FILE_DIR = CMakeFiles\cse421_compilers_project.dir\Phase_2
+
+build CMakeFiles/cse421_compilers_project.dir/Phase_2/ParserRulesReader.cpp.obj: CXX_COMPILER__cse421_compilers_project_unscanned_Debug E$:/college/level-4/1st$ term/Compilers/Project/cse421-compilers-project/Phase$ 2/ParserRulesReader.cpp || cmake_object_order_depends_target_cse421_compilers_project
+  DEP_FILE = CMakeFiles\cse421_compilers_project.dir\Phase_2\ParserRulesReader.cpp.obj.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -I"E:/college/level-4/1st term/Compilers/Project/cse421-compilers-project/Phase 1"
+  OBJECT_DIR = CMakeFiles\cse421_compilers_project.dir
+  OBJECT_FILE_DIR = CMakeFiles\cse421_compilers_project.dir\Phase_2
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target cse421_compilers_project
 
 
 #############################################
-# Link the executable lexical_analyzer_generator.exe
+# Link the executable Parse_Generator.exe
 
-build lexical_analyzer_generator.exe: CXX_EXECUTABLE_LINKER__cse421_compilers_project_Debug CMakeFiles/cse421_compilers_project.dir/Phase_1/DFA.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/DFAMinimizer.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA2DFA.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/RegexAnalyzer.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/RegularDefToken.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/RegularExpToken.cpp.obj
+build Parse_Generator.exe: CXX_EXECUTABLE_LINKER__cse421_compilers_project_Debug CMakeFiles/cse421_compilers_project.dir/Phase_1/DFA.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/DFAMinimizer.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA2DFA.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/RegexAnalyzer.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/RegularDefToken.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_1/RegularExpToken.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_2/testing.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_2/ParsingTableGenerator.cpp.obj CMakeFiles/cse421_compilers_project.dir/Phase_2/ParserRulesReader.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\cse421_compilers_project.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_FILE = lexical_analyzer_generator.exe
-  TARGET_IMPLIB = liblexical_analyzer_generator.dll.a
-  TARGET_PDB = lexical_analyzer_generator.exe.dbg
+  TARGET_FILE = Parse_Generator.exe
+  TARGET_IMPLIB = libParse_Generator.dll.a
+  TARGET_PDB = Parse_Generator.exe.dbg
 
 
 #############################################
@@ -156,7 +170,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build cse421_compilers_project: phony lexical_analyzer_generator.exe
+build cse421_compilers_project: phony Parse_Generator.exe
 
 # =============================================================================
 # Folder targets.
@@ -166,7 +180,7 @@ build cse421_compilers_project: phony lexical_analyzer_generator.exe
 #############################################
 # Folder: E:/college/level-4/1st term/Compilers/Project/cse421-compilers-project/cmake-build-debug
 
-build all: phony lexical_analyzer_generator.exe
+build all: phony Parse_Generator.exe
 
 # =============================================================================
 # Built-in targets

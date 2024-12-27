@@ -12,7 +12,6 @@ add_executable(cse421_compilers_project
         "Phase 1/DFAMinimizer.h"
         "Phase 1/LexicalAnalyzer.cpp"
         "Phase 1/LexicalAnalyzer.h"
-        "Phase 1/Main.cpp"
         "Phase 1/NFA.cpp"
         "Phase 1/NFA.h"
         "Phase 1/NFA2DFA.cpp"
@@ -23,6 +22,13 @@ add_executable(cse421_compilers_project
         "Phase 1/RegularDefToken.h"
         "Phase 1/RegularExpToken.cpp"
         "Phase 1/RegularExpToken.h"
+        "Phase 2/testing.cpp"
+        "Phase 2/ParsingDataStructs.h"
+        "Phase 2/ParsingTable.h"
+        "Phase 2/ParsingTableGenerator.h"
+        "Phase 2/ParsingTableGenerator.cpp"
+        "Phase 2/ParserRulesReader.cpp"
+        "Phase 2/ParserRulesReader.h"
 )
 
-set_target_properties(cse421_compilers_project PROPERTIES OUTPUT_NAME "lexical_analyzer_generator")
+set_target_properties(cse421_compilers_project PROPERTIES OUTPUT_NAME "Parse_Generator")

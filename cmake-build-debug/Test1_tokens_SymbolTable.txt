@@ -1,0 +1,83 @@
+int
+id
+assign
+num
+float
+id
+assign
+num
+;
+float
+id
+assign
+num
+id
+id
+,
+id
+num
+id
+if
+(
+id
+relop
+num
+)
+{
+id
+assign
+id
+mulop
+num
+}
+else
+{
+id
+assign
+id
+mulop
+num
+}
+Symbol Table:
+Lexeme    Token ID
+------------------------------
+int       int
+n         id
+=         assign
+3         num
+float     float
+f         id
+=         assign
+56.7      num
+;         ;
+float     float
+f2        id
+=         assign
+5.67E1    num
+x         id
+x         id
+,         ,
+x         id
+5         num
+n         id
+if        if
+(         (
+f         id
+>         relop
+50        num
+)         )
+{         {
+f         id
+=         assign
+f2        id
+/         mulop
+2         num
+}         }
+else      else
+{         {
+f         id
+=         assign
+f2        id
+*         mulop
+2         num
+}         }

@@ -1,0 +1,19 @@
+boolean
+id
+assign
+num
+boolean
+id
+assign
+id
+Symbol Table:
+Lexeme    Token ID
+------------------------------
+boolean   boolean
+x         id
+=         assign
+0         num
+boolean   boolean
+x         id
+=         assign
+false     id

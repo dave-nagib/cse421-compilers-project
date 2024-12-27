@@ -1,0 +1,19 @@
+int
+id
+assign
+num
+id
+id
+)
+;
+Symbol Table:
+Lexeme    Token ID
+------------------------------
+int       int
+x         id
+=         assign
+70        num
+e         id
+b         id
+)         )
+;         ;

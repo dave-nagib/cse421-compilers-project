@@ -29,24 +29,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8955b080-252b-49e8-91d8-f5d68556844b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Phase 2/ParserRulesReader.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Phase 2/ParserRulesReader.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Phase 2/testing.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Phase 1/DFA.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Phase 1/DFA.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Phase 1/LexicalAnalyzer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Phase 1/LexicalAnalyzer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Phase 1/test/Test Illustrations/lexical_rules_test12.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-d552c669faba17222d09.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2024-12-05T13-33-36-0450.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-cse421_compilers_project-Debug-1428ff37d1182878718b.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/DFA.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/DFA.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/DFAMinimizer.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/DFAMinimizer.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/LexicalAnalyzer.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/Main.cpp.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA2DFA.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/cse421_compilers_project.dir/Phase_1/NFA2DFA.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lexical_analyzer_generator.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/lexical_analyzer_generator.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/lexical_rules_test1_symbol_table.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/sample_program_test2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +71,9 @@
     &quot;accountId&quot;: &quot;c874082c-628c-4bc1-babe-ab0ed63bcd78&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Phase 1/Main.cpp" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -128,12 +126,12 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="cse421_compilers_project" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="cse421_compilers_project" TARGET_NAME="cse421_compilers_project" CONFIG_NAME="Debug" RUN_PATH="lexical_analyzer_generator.exe">
+    <configuration name="cse421_compilers_project" type="CMakeRunConfiguration" factoryName="Application" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$/Phase 2" PASS_PARENT_ENVS_2="true" PROJECT_NAME="cse421_compilers_project" TARGET_NAME="cse421_compilers_project" CONFIG_NAME="Debug" RUN_PATH="$PROJECT_DIR$/cmake-build-debug/Parse_Generator.exe">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -150,6 +148,8 @@
       <workItem from="1733252264562" duration="18921000" />
       <workItem from="1733326586898" duration="15939000" />
       <workItem from="1733404133355" duration="9492000" />
+      <workItem from="1734965976273" duration="4332000" />
+      <workItem from="1735032638745" duration="17308000" />
     </task>
     <servers />
   </component>
