@@ -58,6 +58,13 @@ public:
     const std::unordered_map<std::string, SymbolSet>& getFollowSets();
     /** Method to get the computed parsing table */
     ParsingTable getTable();
+    /** Method to get the Start Symbol */
+    std::string getStartSym();
+    /** Method to get the Terminal set */
+    SymbolSet getTerminals();
+    /** Method to get the non-Terminal set */
+    SymbolSet  getNonTerminals();
+
 };
 
 #endif //DFA_CPP_PARSINGTABLEGENERATOR_H

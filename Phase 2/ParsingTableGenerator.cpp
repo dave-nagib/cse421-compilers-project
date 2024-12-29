@@ -188,3 +188,15 @@ ParsingTable ParsingTableGenerator::getTable() {
     }
     return table;
 }
+
+string ParsingTableGenerator::getStartSym() {
+    return startSymbol;
+}
+
+SymbolSet ParsingTableGenerator::getTerminals() {
+    return terminals;
+}
+
+SymbolSet ParsingTableGenerator::getNonTerminals() {
+    return nonTerminals;
+}
