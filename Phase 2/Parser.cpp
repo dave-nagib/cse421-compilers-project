@@ -5,11 +5,12 @@
 
 #include <iostream>
 #include <stack>
+#include <fstream>
 #include "Parser.h"
 
 using namespace std;
 
-void Parser::parse(const vector<string>& input) {
+void Parser::parse(const vector<string>& input, const string &derivation_path) {
     stack<string> parseStack;
 
     // validate the input contains the end token
@@ -75,8 +76,23 @@ void Parser::parse(const vector<string>& input) {
         derivationSteps.push_back(temp);
         temp = "";
     }
-    printDerivation();
+    printDerivation(derivation_path);
 }
+
+void Parser::printDerivation(const string &derivation_path) const {
+    ofstream output_file(derivation_path);
+    if (!output_file.is_open()) {
+        cerr << "Error: Could not open file "
+             << derivation_path
+             << " for writing." << endl;
+        return;
+    }
+    output_file << "Derivation Steps:" << endl;
+    for (const auto& step : derivationSteps) {
+        output_file << step << endl;
+    }
+}
+
 
 void Parser::printDerivation() const {
     for (const auto& step : derivationSteps) {

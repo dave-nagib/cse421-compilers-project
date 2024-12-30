@@ -7,6 +7,7 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <fstream>
 #include "ParsingDataStructs.h"
 
 class ParsingTable {
@@ -52,6 +53,24 @@ public:
                 std::cout << j << " ";
             }
             std::cout << std::endl;
+        }
+    }
+
+    void printTable(const std::string &non_terminals_file_path){
+        std::ofstream output_file(non_terminals_file_path);
+        if (!output_file.is_open()) {
+            std::cerr << "Error: Could not open file "
+                 << non_terminals_file_path
+                 << " for writing." << std::endl;
+            return;
+        }
+        output_file << "Parsing Table:" << std::endl;
+        for (auto i : table){
+            output_file << i.first << " -> ";
+            for (auto j : i.second){
+                output_file << j << " ";
+            }
+            output_file << std::endl;
         }
     }
 };

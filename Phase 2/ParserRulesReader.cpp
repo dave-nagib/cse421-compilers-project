@@ -292,6 +292,29 @@ void ParserRulesReader::printGrammar() {
     }
 }
 
+void ParserRulesReader::printGrammar(const string &grammar_file_path) {
+    ofstream output_file(grammar_file_path);
+    if (!output_file.is_open()) {
+        cerr << "Error: Could not open file "
+             << grammar_file_path
+             << " for writing." << endl;
+        return;
+    }
+
+    output_file << "Start Symbol: " << startingSymbol << endl;
+    output_file << "Grammar:" << endl;
+    for (auto const& entry : grammar) {
+        output_file << entry.first << " -> ";
+        for (auto const& rule : entry.second) {
+            for (auto const& symbol : rule) {
+                output_file << symbol << " ";
+            }
+            output_file << "| ";
+        }
+        output_file << endl;
+    }
+}
+
 void ParserRulesReader::printTerminals() {
     cout << "Terminals: " << endl;
     for (auto const& terminal : terminals) {
@@ -299,10 +322,40 @@ void ParserRulesReader::printTerminals() {
     }
 }
 
+void ParserRulesReader::printTerminals(const string &terminals_file_path) {
+    ofstream output_file(terminals_file_path);
+    if (!output_file.is_open()) {
+        cerr << "Error: Could not open file "
+             << terminals_file_path
+             << " for writing." << endl;
+        return;
+    }
+
+    output_file << "Terminals: " << endl;
+    for (auto const& terminal : terminals) {
+        output_file << terminal << endl;
+    }
+}
+
 void ParserRulesReader::printNonTerminals() {
     cout << "Non-Terminals: " << endl;
     for (auto const& nonTerminal : nonTerminals) {
         cout << nonTerminal << endl;
+    }
+}
+
+void ParserRulesReader::printNonTerminals(const string &non_terminals_file_path) {
+    ofstream output_file(non_terminals_file_path);
+    if (!output_file.is_open()) {
+        cerr << "Error: Could not open file "
+             << non_terminals_file_path
+             << " for writing." << endl;
+        return;
+    }
+
+    output_file << "Non-Terminals: " << endl;
+    for (auto const& nonTerminal : nonTerminals) {
+        output_file << nonTerminal << endl;
     }
 }
 

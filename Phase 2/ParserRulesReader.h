@@ -30,10 +30,15 @@ public:
     void readRules(string rulesFilePath);
     /** Prints the grammar */
     void printGrammar();
+    void printGrammar(const std::string &grammar_file_path);
     /** Prints the terminals */
     void printTerminals();
+    void printTerminals(const std::string &terminals_file_path);
     /** Prints the non-terminals */
     void printNonTerminals();
+    void printNonTerminals(const std::string &non_terminals_file_path);
+
+
 
     /** Returns the grammar (const reference) */
     const Grammar& getGrammar() const;

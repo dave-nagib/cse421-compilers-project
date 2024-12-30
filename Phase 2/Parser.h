@@ -62,7 +62,8 @@ public:
         SYNCH = ParsingTableGenerator::SYNCH;
     }
 
-    void parse(const std::vector<std::string>& input);
+    void parse(const std::vector<std::string>& input, const std::string &derivation_path);
+    void printDerivation(const std::string &derivation_path) const;
     void printDerivation() const;
 };
 
