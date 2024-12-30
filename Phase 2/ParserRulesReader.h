@@ -16,10 +16,12 @@ private:
     SymbolSet nonTerminals;
     string rulesFilePath;
     string startingSymbol;
+    char order = '0';
     void readRulesFile();
     bool generateLL1Grammar();
     bool eliminateLeftRecursion();
     bool applyLeftFactoring();
+    static string findLongestCommonPrefix(const std::vector<std::vector<std::string>>& rules);
 
 public:
     /** Default constructor */
@@ -32,18 +34,20 @@ public:
     void printTerminals();
     /** Prints the non-terminals */
     void printNonTerminals();
-    /** Returns the grammar */
-    Grammar getGrammar();
-    /** Returns the terminals */
-    SymbolSet getTerminals();
-    /** Returns the non-terminals */
-    SymbolSet getNonTerminals();
-    /** Returns the starting symbol */
-    string getStartingSymbol();
 
+    /** Returns the grammar (const reference) */
+    const Grammar& getGrammar() const;
 
+    /** Returns the terminals (const reference) */
+    const SymbolSet& getTerminals() const;
 
+    /** Returns the non-terminals (const reference) */
+    const SymbolSet& getNonTerminals() const;
+
+    /** Returns the starting symbol (const) */
+    const string& getStartingSymbol() const;
 };
+
 
 
 

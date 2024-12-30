@@ -56,7 +56,7 @@ void ParserRulesReader::readRulesFile() {
                 --i;
             }
             else if (isLHSSide) {
-                if (c == ' ') {
+                if (c == ' ' || c == '\t') {
                     continue;
                 } else if (c == ':') {
                     isLHSSide = false;
@@ -71,7 +71,7 @@ void ParserRulesReader::readRulesFile() {
                 }
             }
             else if (isRHSSide) {
-                if (c == ' '){
+                if (c == ' ' || c == '\t') {
                     if (!currentExpression.empty()) {
                         currentRHS.push_back(currentExpression);
                         nonTerminals.insert(currentExpression);
@@ -109,7 +109,9 @@ void ParserRulesReader::readRulesFile() {
                 } else if (c == '\n') {
                     if (!currentExpression.empty()) {
                         currentRHS.push_back(currentExpression);
-                        nonTerminals.insert(currentExpression);
+                        if (!isTerminal) {
+                            nonTerminals.insert(currentExpression);
+                        }
                         currentExpression = "";
                     }
                 } else if (c == '\\') {
@@ -148,17 +150,20 @@ bool ParserRulesReader::generateLL1Grammar() {
 
 bool ParserRulesReader::eliminateLeftRecursion() {
     bool notLL1 = false;
+    //create a copy of the grammar
+    Grammar originalGrammar = grammar;
 
-    for (auto& [lhs, rules] : grammar) {
-        std::vector<std::vector<std::string>> newRules;
+    for (auto& [lhs, rules] : originalGrammar) {
+        std::vector<std::vector<std::string>> nonLeftRecursiveRules;
         std::vector<std::vector<std::string>> leftRecursiveRules;
-
         // Separate left-recursive and non-left-recursive rules
         for (auto& rule : rules) {
             if (!rule.empty() && rule[0] == lhs) {
-                leftRecursiveRules.push_back(std::vector<std::string>(rule.begin() + 1, rule.end())); // Remove `lhs`
+                // Left-recursive rule: remove `lhs` from the rule
+                leftRecursiveRules.push_back(std::vector<std::string>(rule.begin() + 1, rule.end()));
             } else {
-                newRules.push_back(rule);
+                // Non-left-recursive rule
+                nonLeftRecursiveRules.push_back(rule);
             }
         }
 
@@ -166,24 +171,24 @@ bool ParserRulesReader::eliminateLeftRecursion() {
             notLL1 = true;
 
             // Create a new non-terminal for left recursion
-            std::string newNonTerminal = lhs + "'";
+            std::string newNonTerminal = lhs + order++;
             nonTerminals.insert(newNonTerminal);
 
-            // Update the original non-left-recursive rules
-            for (auto& rule : newRules) {
+            // Update the non-left-recursive rules to use the new non-terminal
+            for (auto& rule : nonLeftRecursiveRules) {
                 rule.push_back(newNonTerminal);
             }
 
-            // Add new rules for the new non-terminal
+            // Create new rules for the new non-terminal
             std::vector<std::vector<std::string>> newNonTerminalRules;
             for (auto& rule : leftRecursiveRules) {
-                rule.push_back(newNonTerminal);
+                rule.push_back(newNonTerminal);  // Append the new non-terminal
                 newNonTerminalRules.push_back(rule);
             }
-            newNonTerminalRules.push_back({"\\L"}); // Add epsilon (lambda)
+            newNonTerminalRules.push_back({"\\L"});  // Add epsilon (λ) to terminate recursion
 
             // Update the grammar
-            grammar[lhs] = newRules;
+            grammar[lhs] = nonLeftRecursiveRules;
             grammar[newNonTerminal] = newNonTerminalRules;
         }
     }
@@ -192,16 +197,19 @@ bool ParserRulesReader::eliminateLeftRecursion() {
 }
 
 
+
 bool ParserRulesReader::applyLeftFactoring() {
     bool notLL1 = false;
+    Grammar originalGrammar = grammar;
 
-    for (auto& [lhs, rules] : grammar) {
+    for (auto& [lhs, rules] : originalGrammar) {
         std::unordered_map<std::string, std::vector<std::vector<std::string>>> prefixGroups;
         std::vector<std::vector<std::string>> factoredRules;
 
         // Group rules by their common prefixes
         for (auto& rule : rules) {
-            std::string prefix = rule.empty() ? "" : rule[0];
+            if (rule.empty()) continue;
+            std::string prefix = findLongestCommonPrefix({rule});  // Use the helper function
             prefixGroups[prefix].push_back(rule);
         }
 
@@ -210,26 +218,26 @@ bool ParserRulesReader::applyLeftFactoring() {
             if (group.size() > 1) {
                 notLL1 = true;
 
-                // Create a new non-terminal
-                std::string newNonTerminal = lhs + "'";
+                // Create a new non-terminal for the group
+                std::string newNonTerminal = lhs + order++;
                 nonTerminals.insert(newNonTerminal);
 
                 // Add the factored rule to the original non-terminal
                 factoredRules.push_back({prefix, newNonTerminal});
 
-                // Add new rules for the new non-terminal
+                // Create new rules for the new non-terminal
                 std::vector<std::vector<std::string>> newRules;
                 for (auto& rule : group) {
                     if (rule.size() > 1) {
-                        newRules.push_back(std::vector<std::string>(rule.begin() + 1, rule.end())); // Remove the prefix
+                        newRules.push_back(std::vector<std::string>(rule.begin() + 1, rule.end()));  // Remove the prefix
                     } else {
-                        newRules.push_back({"\\L"}); // Handle epsilon
+                        newRules.push_back({"\\L"});  // Handle epsilon
                     }
                 }
 
                 grammar[newNonTerminal] = newRules;
             } else {
-                factoredRules.push_back(group[0]); // Single rule, no factoring needed
+                factoredRules.push_back(group[0]);  // Single rule, no factoring needed
             }
         }
 
@@ -238,6 +246,26 @@ bool ParserRulesReader::applyLeftFactoring() {
     }
 
     return notLL1;
+}
+
+std::string ParserRulesReader::findLongestCommonPrefix(const std::vector<std::vector<std::string>>& rules) {
+    if (rules.empty()) return "";
+    std::string prefix = rules[0][0];
+
+    for (const auto& rule : rules) {
+        std::string currentPrefix;
+        for (size_t i = 0; i < std::min(prefix.size(), rule[0].size()); ++i) {
+            if (prefix[i] == rule[0][i]) {
+                currentPrefix += prefix[i];
+            } else {
+                break;
+            }
+        }
+        prefix = currentPrefix;
+        if (prefix.empty()) break;
+    }
+
+    return prefix;
 }
 
 
@@ -270,18 +298,18 @@ void ParserRulesReader::printNonTerminals() {
     }
 }
 
-Grammar ParserRulesReader::getGrammar() {
+const Grammar& ParserRulesReader::getGrammar() const {
     return grammar;
 }
 
-SymbolSet ParserRulesReader::getTerminals() {
+const SymbolSet& ParserRulesReader::getTerminals() const {
     return terminals;
 }
 
-SymbolSet ParserRulesReader::getNonTerminals() {
+const SymbolSet& ParserRulesReader::getNonTerminals() const {
     return nonTerminals;
 }
 
-string ParserRulesReader::getStartingSymbol() {
+const string& ParserRulesReader::getStartingSymbol() const {
     return startingSymbol;
 }
