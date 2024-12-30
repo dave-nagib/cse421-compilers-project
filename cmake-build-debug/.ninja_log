@@ -81,3 +81,7 @@
 1712	4906	7572663481156431	Parse_Generator.exe	1fb10b86ec95169f
 6	1473	7572663907648639	CMakeFiles/cse421_compilers_project.dir/Phase_2/ParserRulesReader.cpp.obj	b596d5ce13a7cfa1
 1474	4518	7572663922326247	Parse_Generator.exe	1fb10b86ec95169f
+15	2991	7572685933861123	CMakeFiles/cse421_compilers_project.dir/Phase_2/testing.cpp.obj	b9f4cd06d14bcb4a
+49	4348	7572685934209060	CMakeFiles/cse421_compilers_project.dir/Phase_2/ParsingTableGenerator.cpp.obj	7d3a2b308ac4af31
+68	4701	7572685934405741	CMakeFiles/cse421_compilers_project.dir/Phase_2/ParserRulesReader.cpp.obj	b596d5ce13a7cfa1
+4701	8999	7572685980717490	Parse_Generator.exe	1fb10b86ec95169f
