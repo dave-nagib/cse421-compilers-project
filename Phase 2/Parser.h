@@ -24,6 +24,10 @@ private:
     std::string join(const std::vector<std::string>& vec, const std::string& delimiter) {
         std::string result;
         for (const auto& str : vec) {
+            if(str == EPSILON) {
+                result += "\\L" + delimiter;
+                continue;
+            }
             result += str + delimiter;
         }
         return result;
@@ -41,11 +45,7 @@ public:
         nonTerminals = std::move(tableGenerator.getNonTerminals());
     }
 
-    bool parse(const std::vector<std::string>& input);
-    bool panicModeRecovery(const std::string& nonTerminal,
-                           const std::string& inputToken,
-                           const std::vector<std::string>& input,
-                           size_t& inputIndex);
+    void parse(const std::vector<std::string>& input);
     void printDerivation() const;
 };
 

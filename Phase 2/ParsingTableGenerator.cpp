@@ -127,7 +127,7 @@ void ParsingTableGenerator::computeTable() {
     if (firstSets.empty()) getFirstSets();
     if (followSets.empty()) computeFollow();
     // Initialize the table with dimensions
-    table.initializeTable(nonTerminals.size(), terminals.size());
+//    table.initializeTable(nonTerminals.size(), terminals.size());
 
     try {
         // For each production rule A -> alpha
@@ -182,12 +182,20 @@ const unordered_map<string, SymbolSet>& ParsingTableGenerator::getFollowSets() {
     return followSets;
 }
 
+//ParsingTable ParsingTableGenerator::getTable() {
+//    if (!table.isInitialized()) {
+//        computeTable();
+//    }
+//    return table;
+//}
 ParsingTable ParsingTableGenerator::getTable() {
-    if (!table.isInitialized()) {
+    if (!tableComputed) {
         computeTable();
+        tableComputed = true;
     }
     return table;
 }
+
 
 string ParsingTableGenerator::getStartSym() {
     return startSymbol;

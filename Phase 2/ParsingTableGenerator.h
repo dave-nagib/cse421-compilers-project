@@ -23,6 +23,7 @@ private:
     const std::string EPSILON = "\0";
     const std::string END = "$";
     std::string startSymbol;
+    bool tableComputed = false;
     /** Private method to update the follow set of a symbol */
     bool updateFollow(const std::string &lhs, const std::vector<std::string> &rhs);
     /** Private method to update the parsing table for a given production rule */
