@@ -7,6 +7,7 @@
 
 
 #include <string>
+#include <stack>
 #include "ParsingTable.h"
 #include "ParsingTableGenerator.h"
 
@@ -31,6 +32,18 @@ private:
             }
             result += str + delimiter;
         }
+        return result;
+    }
+    std::string joinStack(const std::stack<std::string>& stack, const std::string& delimiter) {
+        std::stack<std::string> tempStack = stack; // Create a copy of the stack
+        std::string result;
+
+        // Extract elements from the temporary stack
+        while (!tempStack.empty()) {
+            result = tempStack.top() + (result.empty() ? "" : delimiter + result);
+            tempStack.pop();
+        }
+
         return result;
     }
 

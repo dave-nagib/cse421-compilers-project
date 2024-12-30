@@ -8,27 +8,35 @@
 #include "ParsingTableGenerator.h"
 
 void test_generation(){
+    string EPSILON = ParsingTableGenerator::EPSILON;
+    string END = ParsingTableGenerator::END;
+    string SYNCH = ParsingTableGenerator::SYNCH;
     Grammar grammar = {
             {"E", {{"T", "E'"}}},
-            {"E'", {{"+", "T", "E'"}, {"\0"}}}, // "" represents epsilon
+            {"E'", {{"+", "T", "E'"}, {EPSILON}}}, // "" represents epsilon
             {"T", {{"F", "T'"}}},
-            {"T'", {{"*", "F", "T'"}, {"\0"}}},
+            {"T'", {{"*", "F", "T'"}, {EPSILON}}},
             {"F", {{"(", "E", ")"}, {"id"}}}
     };
 
-    SymbolSet terminals = {"+", "*", "(", ")", "id", "$"};
+    SymbolSet terminals = {"+", "*", "(", ")", "id", END};
     SymbolSet nonTerminals = {"E", "E'", "T", "T'", "F"};
     std::string startSymbol = "E";
 
     ParsingTableGenerator generator(grammar, terminals, nonTerminals, startSymbol);
     ParsingTable table = generator.getTable();
+    Parser parser(generator);
+    std::cout << "\nParsing input: id + * id" << std::endl;
+    parser.parse({"id", "+", "*", "id", "$"});
+    std::cout << "\nParsing Table: " << std::endl;
     table.printTable();
-
 }
 
 
 void test_parser_1(){
-    string EPSILON = "\0";
+    string EPSILON = ParsingTableGenerator::EPSILON;
+    string END = ParsingTableGenerator::END;
+    string SYNCH = ParsingTableGenerator::SYNCH;
     SymbolSet terminals = {"+", "*", "(", ")", "id", "$"};
     SymbolSet nonTerminals = {"E", "E'", "T", "T'", "F"};
 
@@ -73,7 +81,9 @@ void test_parser_1(){
 }
 
 void test_parser_2(){
-    string EPSILON = "\0";
+    string EPSILON = ParsingTableGenerator::EPSILON;
+    string END = ParsingTableGenerator::END;
+    string SYNCH = ParsingTableGenerator::SYNCH;
     SymbolSet terminals = {"a", "b", "$"};
     SymbolSet nonTerminals = {"S", "B"};
 
@@ -140,16 +150,30 @@ void test_parser_3(){
     std::cout << "\nParsing input: c d a d b" << std::endl;
     parser.parse(input3); // Should trigger error recovery
 }
-
-
-int main() {
-    //test_generation();
+void whole_test(){
     ParserRulesReader parserRulesReader;
-    parserRulesReader.readRules(R"(E:\college\level-4\1st term\Compilers\Project\cse421-compilers-project\cmake-build-debug\CFG_Input_Rules.txt)");
+    parserRulesReader.readRules(R"(F:\NewProjects\compilers\compiler_lexical\cmake-build-debug\CFG_Input_Rules.txt)");
     parserRulesReader.printGrammar();
     cout << "----------------------------------------------------------------" << endl;
     parserRulesReader.printTerminals();
     cout << "----------------------------------------------------------------" << endl;
     parserRulesReader.printNonTerminals();
+    ParsingTableGenerator generator(parserRulesReader.getGrammar(),
+                                    parserRulesReader.getTerminals(),
+                                    parserRulesReader.getNonTerminals(),
+                                    parserRulesReader.getStartingSymbol());
+    ParsingTable table = generator.getTable();
+    Parser parser(generator);
+    std::cout << "\nParsing input: id + * id" << std::endl;
+    parser.parse({"int", "id", ";", "id", "=", "num", ";", "if", "(", "id", ">", "num", ")", "{", "id", "=", "num", ";", "}", "$"});
+
+    std::cout << "\nParsing Table: " << std::endl;
+    table.printTable();
+}
+
+int main() {
+//    test_generation();
+    test_parser_1();
+//    whole_test();
     return 0;
 }
