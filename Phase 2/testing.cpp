@@ -5,16 +5,17 @@
 #include <iostream>
 #include "ParserRulesReader.h"
 #include "Parser.h"
+#include "ParsingTableGenerator.h"
 void test_generation(){
     Grammar grammar = {
             {"E", {{"T", "E'"}}},
-            {"E'", {{"+", "T", "E'"}, {"\0"}}}, // "" represents epsilon
+            {"E'", {{"+", "T", "E'"}, {ParsingTableGenerator::EPSILON}}},
             {"T", {{"F", "T'"}}},
-            {"T'", {{"*", "F", "T'"}, {"\0"}}},
+            {"T'", {{"*", "F", "T'"}, {ParsingTableGenerator::EPSILON}}},
             {"F", {{"(", "E", ")"}, {"id"}}}
     };
 
-    SymbolSet terminals = {"+", "*", "(", ")", "id", "$"};
+    SymbolSet terminals = {"+", "*", "(", ")", "id", ParsingTableGenerator::END};
     SymbolSet nonTerminals = {"E", "E'", "T", "T'", "F"};
     std::string startSymbol = "E";
 
@@ -26,8 +27,8 @@ void test_generation(){
 
 
 void test_parser_1(){
-    string EPSILON = "\0";
-    SymbolSet terminals = {"+", "*", "(", ")", "id", "$"};
+    string EPSILON = ParsingTableGenerator::EPSILON;
+    SymbolSet terminals = {"+", "*", "(", ")", "id", ParsingTableGenerator::END};
     SymbolSet nonTerminals = {"E", "E'", "T", "T'", "F"};
 
     std::string startSymbol = "E";
@@ -37,14 +38,14 @@ void test_parser_1(){
     parsingTable.addProduction("E", "(", {"T", "E'"});
     parsingTable.addProduction("E", "id", {"T", "E'"});
     parsingTable.addProduction("E'", "+", {"+", "T", "E'"});
-    parsingTable.addProduction("E'", ")", {"\0"}); // epsilon
-    parsingTable.addProduction("E'", "$", {"\0"}); // epsilon
+    parsingTable.addProduction("E'", ")", {ParsingTableGenerator::EPSILON}); // epsilon
+    parsingTable.addProduction("E'", ParsingTableGenerator::END, {ParsingTableGenerator::EPSILON}); // epsilon
     parsingTable.addProduction("T", "(", {"F", "T'"});
     parsingTable.addProduction("T", "id", {"F", "T'"});
-    parsingTable.addProduction("T'", "+", {"\0"}); // epsilon
+    parsingTable.addProduction("T'", "+", {ParsingTableGenerator::EPSILON}); // epsilon
     parsingTable.addProduction("T'", "*", {"*", "F", "T'"});
-    parsingTable.addProduction("T'", ")", {"\0"}); // epsilon
-    parsingTable.addProduction("T'", "$", {"\0"}); // epsilon
+    parsingTable.addProduction("T'", ")", {ParsingTableGenerator::EPSILON}); // epsilon
+    parsingTable.addProduction("T'", ParsingTableGenerator::END, {ParsingTableGenerator::EPSILON}); // epsilon
     parsingTable.addProduction("F", "(", {"(", "E", ")"});
     parsingTable.addProduction("F", "id", {"id"});
 
@@ -54,16 +55,16 @@ void test_parser_1(){
     cout << "Parsing table generated successfully.\n";
 
 
-    std::vector<std::string> input1 = {"id", "+", "id", "*", "id", "$"};
+    std::vector<std::string> input1 = {"id", "+", "id", "*", "id", ParsingTableGenerator::END};
     std::cout << "Parsing input: id + id * id" << std::endl;
     parser.parse(input1);// Should produce leftmost derivation
 
 
-    std::vector<std::string> input2 = {"id", "+", "*", "id", "$"};
+    std::vector<std::string> input2 = {"id", "+", "*", "id", ParsingTableGenerator::END};
     std::cout << "\nParsing input: id + * id" << std::endl;
     parser.parse(input2); // Should trigger error recovery
 
-    std::vector<std::string> input3 = {"id", "+", "id", "$"};
+    std::vector<std::string> input3 = {"id", "+", "id", ParsingTableGenerator::END};
     std::cout << "\nParsing input: id + id" << std::endl;
     parser.parse(input3); // Should trigger error recovery
 
@@ -71,8 +72,8 @@ void test_parser_1(){
 }
 
 void test_parser_2(){
-    string EPSILON = "\0";
-    SymbolSet terminals = {"a", "b", "$"};
+    string EPSILON = ParsingTableGenerator::EPSILON;
+    SymbolSet terminals = {"a", "b", ParsingTableGenerator::END};
     SymbolSet nonTerminals = {"S", "B"};
 
     std::string startSymbol = "S";
@@ -80,7 +81,7 @@ void test_parser_2(){
     cout << "hello" << endl;
     // Populate the table (only key entries are shown)
     parsingTable.addProduction("S", "a", {"a", "B", "a"});
-    parsingTable.addProduction("B", "a", {"\0"});
+    parsingTable.addProduction("B", "a", {ParsingTableGenerator::EPSILON});
     parsingTable.addProduction("B", "b", {"b", "B"});
 
     // Create the parser
@@ -89,12 +90,12 @@ void test_parser_2(){
     cout << "Parsing table generated successfully.\n";
 
 
-    std::vector<std::string> input1 = {"a", "b", "b", "a", "$"};
+    std::vector<std::string> input1 = {"a", "b", "b", "a", ParsingTableGenerator::END};
     std::cout << "Parsing input: a b b a" << std::endl;
     parser.parse(input1);// Should produce leftmost derivation
 
 
-    std::vector<std::string> input2 = {"b", "b", "b", "b", "$"};
+    std::vector<std::string> input2 = {"b", "b", "b", "b", ParsingTableGenerator::END};
     std::cout << "\nParsing input: b b b b" << std::endl;
     parser.parse(input2); // Should trigger error recovery
 

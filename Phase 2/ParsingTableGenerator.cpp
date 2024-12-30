@@ -1,6 +1,11 @@
 #include "ParsingTableGenerator.h"
 using namespace std;
 
+// Define constants
+const string ParsingTableGenerator::EPSILON = "\0";
+const string ParsingTableGenerator::END = "$";
+const string ParsingTableGenerator::SYNCH = "\\SYNCH";
+
 // Compute FIRST set for a single symbol
 SymbolSet ParsingTableGenerator::computeFirst(const string& symbol) {
     // If we've already computed FIRST for this symbol, return it
@@ -126,8 +131,6 @@ void ParsingTableGenerator::computeTable() {
     // Compute FIRST and FOLLOW sets for all symbols if not already computed
     if (firstSets.empty()) getFirstSets();
     if (followSets.empty()) computeFollow();
-    // Initialize the table with dimensions
-//    table.initializeTable(nonTerminals.size(), terminals.size());
 
     try {
         // For each production rule A -> alpha
@@ -139,6 +142,15 @@ void ParsingTableGenerator::computeTable() {
     } catch (const std::invalid_argument& e) {
         // If a production rule already exists, then the grammar is not LL(1)
         throw std::invalid_argument("Grammar is not LL(1)");
+    }
+
+    // Add sync symbols to the table at [A, a] that are empty for each terminal a in FOLLOW(A)
+    for (const auto &A: nonTerminals) {
+        for (const auto &a: followSets.at(A)) {
+            if (table.getProduction(A, a).empty()) {
+                table.addProduction(A, a, {SYNCH});
+            }
+        }
     }
 }
 
@@ -164,6 +176,7 @@ void ParsingTableGenerator::updateParsingTable(const string &A, const vector<str
         followSets.at(A).find(END) != followSets.at(A).end()) {
         table.addProduction(A, END, alpha);
     }
+
 }
 
 // Getters for the computed sets

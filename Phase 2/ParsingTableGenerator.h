@@ -20,8 +20,6 @@ private:
     std::unordered_map<std::string, SymbolSet> firstSets;
     std::unordered_map<std::string, SymbolSet> followSets;
     ParsingTable table;
-    const std::string EPSILON = "\0";
-    const std::string END = "$";
     std::string startSymbol;
     bool tableComputed = false;
     /** Private method to update the follow set of a symbol */
@@ -30,6 +28,8 @@ private:
     void updateParsingTable(const std::string &A, const std::vector<std::string> &alpha);
 
 public:
+    static const std::string EPSILON, END, SYNCH;
+
     ParsingTableGenerator(Grammar g, SymbolSet t, SymbolSet nt, std::string startSym)
             : grammar(std::move(g)), startSymbol(std::move(startSym)) {
         // Check for no intersection between terminals and non-terminals
