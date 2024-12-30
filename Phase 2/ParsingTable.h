@@ -34,8 +34,13 @@ public:
     // Add a production to the table
     void addProduction(const std::string& nonTerminal, const std::string& terminal, const std::vector<std::string>& production) {
         // Throw an error if a production rule already exists
-        if (table.find(nonTerminal +" "+ terminal) != table.end() ) {
-            throw std::invalid_argument("Production rule already exists");
+        bool exists = table.find(nonTerminal + " " + terminal) != table.end();
+        if (exists && table[nonTerminal + " " + terminal] != production) {
+//            std::cout << "Production exists: ";
+//            for (const auto& sym : table[nonTerminal + " " + terminal]) std::cout << sym << " ";
+//            std::cout << "\nTried to add: ";
+//            for (const auto& sym : production) std::cout << sym << " ";
+            throw std::invalid_argument("\nProduction rule already exists for " + nonTerminal + ", " + terminal);
         }
         table[nonTerminal + " " + terminal] = production;
     }

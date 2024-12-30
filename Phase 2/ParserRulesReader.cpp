@@ -153,7 +153,10 @@ bool ParserRulesReader::eliminateLeftRecursion() {
     //create a copy of the grammar
     Grammar originalGrammar = grammar;
 
-    for (auto& [lhs, rules] : originalGrammar) {
+    for (auto& entry : grammar) {
+        auto& lhs = entry.first;
+        auto& rules = entry.second;
+        std::vector<std::vector<std::string>> newRules;
         std::vector<std::vector<std::string>> nonLeftRecursiveRules;
         std::vector<std::vector<std::string>> leftRecursiveRules;
         // Separate left-recursive and non-left-recursive rules
@@ -202,7 +205,10 @@ bool ParserRulesReader::applyLeftFactoring() {
     bool notLL1 = false;
     Grammar originalGrammar = grammar;
 
-    for (auto& [lhs, rules] : originalGrammar) {
+    for (auto& entry : grammar) {
+        auto& lhs = entry.first;
+        auto& rules = entry.second;
+
         std::unordered_map<std::string, std::vector<std::vector<std::string>>> prefixGroups;
         std::vector<std::vector<std::string>> factoredRules;
 
@@ -214,7 +220,10 @@ bool ParserRulesReader::applyLeftFactoring() {
         }
 
         // Process each group
-        for (auto& [prefix, group] : prefixGroups) {
+        for (auto& prefixGroup : prefixGroups) {
+            auto& prefix = prefixGroup.first;
+            auto& group = prefixGroup.second;
+
             if (group.size() > 1) {
                 notLL1 = true;
 
@@ -272,9 +281,9 @@ std::string ParserRulesReader::findLongestCommonPrefix(const std::vector<std::ve
 void ParserRulesReader::printGrammar() {
     cout << "Start Symbol: " << startingSymbol << endl;
     cout << "Grammar:" << endl;
-    for (auto const&[key, val] : grammar) {
-        cout << key << " -> ";
-        for (auto const& rule : val) {
+    for (auto const& entry : grammar) {
+        cout << entry.first << " -> ";
+        for (auto const& rule : entry.second) {
             for (auto const& symbol : rule) {
                 cout << symbol << " ";
             }

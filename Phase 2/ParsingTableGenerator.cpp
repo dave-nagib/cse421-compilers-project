@@ -75,14 +75,14 @@ void ParsingTableGenerator::computeFollow() {
         for (const auto& symbolAndProductions : grammar) {
             for (const auto& production : symbolAndProductions.second) {
                 // For each symbol in the production, update its FOLLOW set
-                changed = updateFollow(symbolAndProductions.first, production);
+                changed = changed || updateFollow(symbolAndProductions.first, production);
             }
         }
     } while (changed);
 }
 
 bool ParsingTableGenerator::updateFollow(const string &lhs, const vector<string> &rhs) {
-    bool updated;
+    bool updated = false;
     for (long i = 0; i < rhs.size(); i++) {
         // Only compute FOLLOW for non-terminals
         if (terminals.find(rhs[i]) != terminals.end()) {
@@ -140,8 +140,9 @@ void ParsingTableGenerator::computeTable() {
             }
         }
     } catch (const std::invalid_argument& e) {
-        // If a production rule already exists, then the grammar is not LL(1)
-        throw std::invalid_argument("Grammar is not LL(1)");
+        // If a production rule already exists, then the grammar is not LL(1) -> throw error and e message
+        cout << "The grammar is not LL(1)." << endl;
+        throw e;
     }
 
     // Add sync symbols to the table at [A, a] that are empty for each terminal a in FOLLOW(A)
@@ -195,12 +196,7 @@ const unordered_map<string, SymbolSet>& ParsingTableGenerator::getFollowSets() {
     return followSets;
 }
 
-//ParsingTable ParsingTableGenerator::getTable() {
-//    if (!table.isInitialized()) {
-//        computeTable();
-//    }
-//    return table;
-//}
+
 ParsingTable ParsingTableGenerator::getTable() {
     if (!tableComputed) {
         computeTable();
