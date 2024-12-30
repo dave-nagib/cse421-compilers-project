@@ -120,8 +120,7 @@ void ParserRulesReader::readRulesFile() {
                             currentRHS.push_back(currentExpression);
                             currentExpression = "";
                         }
-                        currentRHS.emplace_back("\\L");
-                        terminals.insert("\\L");
+                        currentRHS.emplace_back("\0");
                         i += 1;
                     }
                 }
@@ -188,7 +187,7 @@ bool ParserRulesReader::eliminateLeftRecursion() {
                 rule.push_back(newNonTerminal);  // Append the new non-terminal
                 newNonTerminalRules.push_back(rule);
             }
-            newNonTerminalRules.push_back({"\\L"});  // Add epsilon (λ) to terminate recursion
+            newNonTerminalRules.push_back({"\0"});  // Add epsilon (λ) to terminate recursion
 
             // Update the grammar
             grammar[lhs] = nonLeftRecursiveRules;
@@ -240,7 +239,7 @@ bool ParserRulesReader::applyLeftFactoring() {
                     if (rule.size() > 1) {
                         newRules.push_back(std::vector<std::string>(rule.begin() + 1, rule.end()));  // Remove the prefix
                     } else {
-                        newRules.push_back({"\\L"});  // Handle epsilon
+                        newRules.push_back({"\0"});  // Handle epsilon
                     }
                 }
 
