@@ -29,6 +29,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8955b080-252b-49e8-91d8-f5d68556844b" name="Changes" comment="">
+<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Phase 2/Parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Phase 2/Parser.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Phase 2/Parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/Phase 2/Parser.h" afterDir="false" />
@@ -40,6 +41,10 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Parse_Generator.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Parse_Generator.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +71,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/dave-nagib/cse421-compilers-project.git&quot;,
-    &quot;accountId&quot;: &quot;c874082c-628c-4bc1-babe-ab0ed63bcd78&quot;
+    &quot;accountId&quot;: &quot;9392ab7e-7a98-4cc3-a7a6-1f4544d655fd&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -106,6 +111,7 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;E:/college/level-4/1st term/Compilers/Project/cse421-compilers-project/cmake-build-debug&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -150,6 +156,7 @@
       <workItem from="1735032638745" duration="17308000" />
       <workItem from="1735551422174" duration="1499000" />
       <workItem from="1735556784222" duration="7553000" />
+      <workItem from="1735568091120" duration="6000" />
     </task>
     <servers />
   </component>

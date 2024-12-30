@@ -153,7 +153,7 @@ bool ParserRulesReader::eliminateLeftRecursion() {
     //create a copy of the grammar
     Grammar originalGrammar = grammar;
 
-    for (auto& entry : grammar) {
+    for (auto& entry : originalGrammar) {
         auto& lhs = entry.first;
         auto& rules = entry.second;
         std::vector<std::vector<std::string>> newRules;
@@ -205,7 +205,7 @@ bool ParserRulesReader::applyLeftFactoring() {
     bool notLL1 = false;
     Grammar originalGrammar = grammar;
 
-    for (auto& entry : grammar) {
+    for (auto& entry : originalGrammar) {
         auto& lhs = entry.first;
         auto& rules = entry.second;
 
