@@ -313,6 +313,8 @@ void ParserRulesReader::printGrammar(const string &grammar_file_path) {
         }
         output_file << endl;
     }
+    cout << "Grammar written to " << grammar_file_path << endl;
+    output_file.close();
 }
 
 void ParserRulesReader::printTerminals() {
@@ -335,6 +337,8 @@ void ParserRulesReader::printTerminals(const string &terminals_file_path) {
     for (auto const& terminal : terminals) {
         output_file << terminal << endl;
     }
+    cout << "Terminals written to " << terminals_file_path << endl;
+    output_file.close();
 }
 
 void ParserRulesReader::printNonTerminals() {
@@ -357,6 +361,8 @@ void ParserRulesReader::printNonTerminals(const string &non_terminals_file_path)
     for (auto const& nonTerminal : nonTerminals) {
         output_file << nonTerminal << endl;
     }
+    cout << "Non-Terminals written to " << non_terminals_file_path << endl;
+    output_file.close();
 }
 
 const Grammar& ParserRulesReader::getGrammar() const {

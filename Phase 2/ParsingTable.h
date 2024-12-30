@@ -72,6 +72,8 @@ public:
             }
             output_file << std::endl;
         }
+        std::cout << "Parsing Table written to " << non_terminals_file_path << std::endl;
+        output_file.close();
     }
 };
 

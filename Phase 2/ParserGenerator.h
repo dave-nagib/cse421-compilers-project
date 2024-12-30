@@ -27,7 +27,7 @@ public:
         parser = new Parser(*generator);
     }
     void generateParser(const std::vector<string>& input, const std::string &derivation_path);
-    void printAll(const std::string &derivation_path);
+    void printAll(const std::string &rules_file_path);
 };
 
 

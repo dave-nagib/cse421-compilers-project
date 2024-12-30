@@ -23,6 +23,8 @@ int main(int argc, char *argv[]){
     // Initialize the lexical analyzer based on the rules file
     output_file_path = rules_file_path.substr(0, rules_file_path.find_last_of('.')) + "_minimized_DFA.txt";
     LexicalAnalyzer lexical_analyzer(rules_file_path, output_file_path);
+    ParserGenerator parserGenerator(parser_rules_file_path);
+    parserGenerator.printAll(parser_rules_file_path);
     while (true)
     {
         std::cout << "To exit, type 'exit'." << std::endl;
@@ -59,9 +61,7 @@ int main(int argc, char *argv[]){
             //write only symbols with a token id = id
             tokens_file << std::left << std::setw(10) << symbol.lexeme << symbol.token_name << std::endl;
         }
-        ParserGenerator parserGenerator(parser_rules_file_path);
-        parserGenerator.generateParser(parser_input, output_file_path);
-        parserGenerator.printAll(output_file_path);
+        parserGenerator.generateParser(parser_input, input_file_path);
         tokens_file.close();
         std::cout << "Tokens written to " << tokens_file_path << std::endl;
 

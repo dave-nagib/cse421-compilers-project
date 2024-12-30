@@ -91,6 +91,8 @@ void Parser::printDerivation(const string &derivation_path) const {
     for (const auto& step : derivationSteps) {
         output_file << step << endl;
     }
+    cout << "Derivation Steps written to " << derivation_path << endl;
+    output_file.close();
 }
 
 
