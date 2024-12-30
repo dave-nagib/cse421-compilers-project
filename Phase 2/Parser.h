@@ -16,8 +16,9 @@ private:
     std::string startSymbol;
     std::vector<std::string> derivationSteps;
     std::unordered_set<std::string> synchronizationPoints = {";", "}", "$"};
-    const std::string EPSILON = "\0";
-    const std::string END = "$";
+    std::string EPSILON = "\0";
+    std::string END = "$";
+    std::string SYNCH = "\\SYNCH";
     SymbolSet terminals;
     SymbolSet nonTerminals;
 
@@ -43,6 +44,9 @@ public:
         startSymbol = std::move(tableGenerator.getStartSym());
         terminals = std::move(tableGenerator.getTerminals());
         nonTerminals = std::move(tableGenerator.getNonTerminals());
+        EPSILON = ParsingTableGenerator::EPSILON;
+        END = ParsingTableGenerator::END;
+        SYNCH = ParsingTableGenerator::SYNCH;
     }
 
     void parse(const std::vector<std::string>& input);

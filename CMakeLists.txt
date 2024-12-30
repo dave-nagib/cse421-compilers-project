@@ -29,6 +29,8 @@ add_executable(cse421_compilers_project
         "Phase 2/ParsingTableGenerator.cpp"
         "Phase 2/ParserRulesReader.cpp"
         "Phase 2/ParserRulesReader.h"
+        "Phase 2/Parser.cpp"
+        "Phase 2/Parser.h"
 )
 
 set_target_properties(cse421_compilers_project PROPERTIES OUTPUT_NAME "Parse_Generator")
