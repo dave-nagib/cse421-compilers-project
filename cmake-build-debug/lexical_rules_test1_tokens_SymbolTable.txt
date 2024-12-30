@@ -1,0 +1,207 @@
+id
+assign
+id
+addop
+id
+ERROR
+id
+addop
+id
+id
+assign
+num
+addop
+num
+id
+ERROR
+id
+(
+id
+ERROR
+id
+)
+mulop
+id
+assign
+id
+addop
+{
+boolean
+int
+float
+}
+id
+ERROR
+id
+addop
+ERROR
+id
+addop
+ERROR
+id
+(
+ERROR
+id
+ERROR
+id
+id
+)
+id
+ERROR
+ERROR
+assign
+ERROR
+assign
+ERROR
+ERROR
+ERROR
+assign
+ERROR
+relop
+ERROR
+relop
+ERROR
+assign
+ERROR
+relop
+ERROR
+relop
+ERROR
+assign
+id
+ERROR
+assign
+{
+else
+while
+}
+{
+if
+}
+ERROR
+;
+,
+ERROR
+(
+ERROR
+)
+{
+}
+ERROR
+id
+ERROR
+ERROR
+addop
+ERROR
+addop
+id
+ERROR
+ERROR
+mulop
+ERROR
+mulop
+Symbol Table:
+Lexeme    Token ID
+------------------------------
+letter    id
+=         assign
+a         id
+-         addop
+z         id
+|         ERROR
+A         id
+-         addop
+Z         id
+digit     id
+=         assign
+0         num
+-         addop
+9         num
+id        id
+:         ERROR
+letter    id
+(         (
+letter    id
+|         ERROR
+digit     id
+)         )
+*         mulop
+digits    id
+=         assign
+digit     id
++         addop
+{         {
+boolean   boolean
+int       int
+float     float
+}         }
+num       id
+:         ERROR
+digit     id
++         addop
+|         ERROR
+digit     id
++         addop
+.         ERROR
+digits    id
+(         (
+\         ERROR
+L         id
+|         ERROR
+E         id
+digits    id
+)         )
+relop     id
+:         ERROR
+\         ERROR
+=         assign
+\         ERROR
+=         assign
+|         ERROR
+!         ERROR
+\         ERROR
+=         assign
+|         ERROR
+>         relop
+|         ERROR
+>         relop
+\         ERROR
+=         assign
+|         ERROR
+<         relop
+|         ERROR
+<         relop
+\         ERROR
+=         assign
+assign    id
+:         ERROR
+=         assign
+{         {
+else      else
+while     while
+}         }
+{         {
+if        if
+}         }
+[         ERROR
+;         ;
+,         ,
+\         ERROR
+(         (
+\         ERROR
+)         )
+{         {
+}         }
+]         ERROR
+addop     id
+:         ERROR
+\         ERROR
++         addop
+|         ERROR
+-         addop
+mulop     id
+:         ERROR
+\         ERROR
+*         mulop
+|         ERROR
+/         mulop

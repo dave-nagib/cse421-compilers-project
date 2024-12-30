@@ -1,0 +1,199 @@
+Derivation Steps:
+Stack: $ METHOD_BODY
+ | Input: int
+ | Action: METHOD_BODY -> STATEMENT_LIST 
+Stack: $ STATEMENT_LIST
+ | Input: int
+ | Action: STATEMENT_LIST -> STATEMENT STATEMENT_LIST2 
+Stack: $ STATEMENT_LIST2 STATEMENT
+ | Input: int
+ | Action: STATEMENT -> DECLARATION 
+Stack: $ STATEMENT_LIST2 DECLARATION
+ | Input: int
+ | Action: DECLARATION -> PRIMITIVE_TYPE id ; 
+Stack: $ STATEMENT_LIST2 ; id PRIMITIVE_TYPE
+ | Input: int
+ | Action: PRIMITIVE_TYPE -> int 
+Stack: $ STATEMENT_LIST2 ; id int
+ | Input: int
+ | Action: match int
+Stack: $ STATEMENT_LIST2 ; id
+ | Input: id
+ | Action: match id
+Stack: $ STATEMENT_LIST2 ;
+ | Input: ;
+ | Action: match ;
+Stack: $ STATEMENT_LIST2
+ | Input: id
+ | Action: STATEMENT_LIST2 -> STATEMENT STATEMENT_LIST2 
+Stack: $ STATEMENT_LIST2 STATEMENT
+ | Input: id
+ | Action: STATEMENT -> ASSIGNMENT 
+Stack: $ STATEMENT_LIST2 ASSIGNMENT
+ | Input: id
+ | Action: ASSIGNMENT -> id = EXPRESSION ; 
+Stack: $ STATEMENT_LIST2 ; EXPRESSION = id
+ | Input: id
+ | Action: match id
+Stack: $ STATEMENT_LIST2 ; EXPRESSION =
+ | Input: assign
+ | Action: Error, expected = but found assign
+Stack: $ STATEMENT_LIST2 ; EXPRESSION
+ | Input: assign
+ | Action: Error:(illegal EXPRESSION ), discard assign)
+Stack: $ STATEMENT_LIST2 ; EXPRESSION
+ | Input: num
+ | Action: EXPRESSION -> SIMPLE_EXPRESSION EXPRESSION3 
+Stack: $ STATEMENT_LIST2 ; EXPRESSION3 SIMPLE_EXPRESSION
+ | Input: num
+ | Action: SIMPLE_EXPRESSION -> TERM SIMPLE_EXPRESSION1 
+Stack: $ STATEMENT_LIST2 ; EXPRESSION3 SIMPLE_EXPRESSION1 TERM
+ | Input: num
+ | Action: TERM -> FACTOR TERM0 
+Stack: $ STATEMENT_LIST2 ; EXPRESSION3 SIMPLE_EXPRESSION1 TERM0 FACTOR
+ | Input: num
+ | Action: FACTOR -> num 
+Stack: $ STATEMENT_LIST2 ; EXPRESSION3 SIMPLE_EXPRESSION1 TERM0 num
+ | Input: num
+ | Action: match num
+Stack: $ STATEMENT_LIST2 ; EXPRESSION3 SIMPLE_EXPRESSION1 TERM0
+ | Input: ;
+ | Action: TERM0 -> \L 
+Stack: $ STATEMENT_LIST2 ; EXPRESSION3 SIMPLE_EXPRESSION1
+ | Input: ;
+ | Action: SIMPLE_EXPRESSION1 -> \L 
+Stack: $ STATEMENT_LIST2 ; EXPRESSION3
+ | Input: ;
+ | Action: EXPRESSION3 -> \L 
+Stack: $ STATEMENT_LIST2 ;
+ | Input: ;
+ | Action: match ;
+Stack: $ STATEMENT_LIST2
+ | Input: if
+ | Action: STATEMENT_LIST2 -> STATEMENT STATEMENT_LIST2 
+Stack: $ STATEMENT_LIST2 STATEMENT
+ | Input: if
+ | Action: STATEMENT -> IF 
+Stack: $ STATEMENT_LIST2 IF
+ | Input: if
+ | Action: IF -> if ( EXPRESSION ) { STATEMENT } else { STATEMENT } 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION ( if
+ | Input: if
+ | Action: match if
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION (
+ | Input: (
+ | Action: match (
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION
+ | Input: id
+ | Action: EXPRESSION -> SIMPLE_EXPRESSION EXPRESSION3 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION3 SIMPLE_EXPRESSION
+ | Input: id
+ | Action: SIMPLE_EXPRESSION -> TERM SIMPLE_EXPRESSION1 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION3 SIMPLE_EXPRESSION1 TERM
+ | Input: id
+ | Action: TERM -> FACTOR TERM0 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION3 SIMPLE_EXPRESSION1 TERM0 FACTOR
+ | Input: id
+ | Action: FACTOR -> id 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION3 SIMPLE_EXPRESSION1 TERM0 id
+ | Input: id
+ | Action: match id
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION3 SIMPLE_EXPRESSION1 TERM0
+ | Input: relop
+ | Action: TERM0 -> \L 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION3 SIMPLE_EXPRESSION1
+ | Input: relop
+ | Action: SIMPLE_EXPRESSION1 -> \L 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) EXPRESSION3
+ | Input: relop
+ | Action: EXPRESSION3 -> relop SIMPLE_EXPRESSION 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) SIMPLE_EXPRESSION relop
+ | Input: relop
+ | Action: match relop
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) SIMPLE_EXPRESSION
+ | Input: num
+ | Action: SIMPLE_EXPRESSION -> TERM SIMPLE_EXPRESSION1 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) SIMPLE_EXPRESSION1 TERM
+ | Input: num
+ | Action: TERM -> FACTOR TERM0 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) SIMPLE_EXPRESSION1 TERM0 FACTOR
+ | Input: num
+ | Action: FACTOR -> num 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) SIMPLE_EXPRESSION1 TERM0 num
+ | Input: num
+ | Action: match num
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) SIMPLE_EXPRESSION1 TERM0
+ | Input: )
+ | Action: TERM0 -> \L 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { ) SIMPLE_EXPRESSION1
+ | Input: )
+ | Action: SIMPLE_EXPRESSION1 -> \L 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT { )
+ | Input: )
+ | Action: match )
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT {
+ | Input: {
+ | Action: match {
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } STATEMENT
+ | Input: id
+ | Action: STATEMENT -> ASSIGNMENT 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ASSIGNMENT
+ | Input: id
+ | Action: ASSIGNMENT -> id = EXPRESSION ; 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION = id
+ | Input: id
+ | Action: match id
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION =
+ | Input: assign
+ | Action: Error, expected = but found assign
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION
+ | Input: assign
+ | Action: Error:(illegal EXPRESSION ), discard assign)
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION
+ | Input: num
+ | Action: EXPRESSION -> SIMPLE_EXPRESSION EXPRESSION3 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION3 SIMPLE_EXPRESSION
+ | Input: num
+ | Action: SIMPLE_EXPRESSION -> TERM SIMPLE_EXPRESSION1 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION3 SIMPLE_EXPRESSION1 TERM
+ | Input: num
+ | Action: TERM -> FACTOR TERM0 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION3 SIMPLE_EXPRESSION1 TERM0 FACTOR
+ | Input: num
+ | Action: FACTOR -> num 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION3 SIMPLE_EXPRESSION1 TERM0 num
+ | Input: num
+ | Action: match num
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION3 SIMPLE_EXPRESSION1 TERM0
+ | Input: ;
+ | Action: TERM0 -> \L 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION3 SIMPLE_EXPRESSION1
+ | Input: ;
+ | Action: SIMPLE_EXPRESSION1 -> \L 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ; EXPRESSION3
+ | Input: ;
+ | Action: EXPRESSION3 -> \L 
+Stack: $ STATEMENT_LIST2 } STATEMENT { else } ;
+ | Input: ;
+ | Action: match ;
+Stack: $ STATEMENT_LIST2 } STATEMENT { else }
+ | Input: }
+ | Action: match }
+Stack: $ STATEMENT_LIST2 } STATEMENT { else
+ | Input: $
+ | Action: Error, expected else but found $
+Stack: $ STATEMENT_LIST2 } STATEMENT {
+ | Input: $
+ | Action: Error, expected { but found $
+Stack: $ STATEMENT_LIST2 } STATEMENT
+ | Input: $
+ | Action: Error, M[STATEMENT, $] = synch STATEMENT has been popped
+Stack: $ STATEMENT_LIST2 }
+ | Input: $
+ | Action: Error, expected } but found $
+Stack: $ STATEMENT_LIST2
+ | Input: $
+ | Action: STATEMENT_LIST2 -> \L 
+Stack: $
+ | Input: $
+ | Action: accept
