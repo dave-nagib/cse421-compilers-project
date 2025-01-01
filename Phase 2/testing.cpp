@@ -105,8 +105,7 @@
 //    std::cout << "Parsing input: a b b a" << std::endl;
 //    parser.parse(input1,"F:\\NewProjects\\compilers\\compiler_lexical\\cmake-build-debug\\Test_3.txt");// Should produce leftmost derivation
 //
-//
-//    std::vector<std::string> input2 = {"b", "b", "b", "b", "$"};
+//    std::vector<std::string> input2 = {"b", "b", "b", "a", "$"};
 //    std::cout << "\nParsing input: b b b b" << std::endl;
 //    parser.parse(input2,"F:\\NewProjects\\compilers\\compiler_lexical\\cmake-build-debug\\Test_4.txt"); // Should trigger error recovery
 //}
@@ -173,7 +172,7 @@
 //
 //int main() {
 ////    test_generation();
-////    test_parser_1();
+////    test_parser_2();
 //    whole_test();
 //    return 0;
 //}

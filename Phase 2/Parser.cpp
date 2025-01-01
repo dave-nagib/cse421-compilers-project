@@ -13,6 +13,7 @@ using namespace std;
 void Parser::parse(const vector<string>& input, const string &derivation_path) {
     stack<string> parseStack;
 
+
     // validate the input contains the end token
     if(input[input.size() - 1] != END){
         cerr << "Error: input should end with $";
@@ -24,15 +25,25 @@ void Parser::parse(const vector<string>& input, const string &derivation_path) {
 
     size_t inputIndex = 0;
     derivationSteps.clear();
+    leftMostDerivation.clear();
+
+    string leftDerivation = startSymbol;
+    leftMostDerivation.push_back(leftDerivation);
 
     while (!parseStack.empty()) {
-        temp += "Stack: " + joinStack(parseStack, " ") + "\n | Input: " + input[inputIndex] + "\n | Action: ";
+        if (inputIndex < input.size()) {
+            temp += "Stack: " + joinStack(parseStack, " ") + "\n | Input: " + join(input, " ")
+                    + "\n | InputIndex: " + input[inputIndex] + " " + to_string(inputIndex)
+                    + "\n | Action: ";
+        }else{
+            temp += "Stack: " + joinStack(parseStack, " ") + "\n | Input: " + join(input, " ")
+                    + "\n | Action: ";
+        }
         string top = parseStack.top();
         parseStack.pop();
         // case if the stack is empty and there remains inputs
         if (top == END || inputIndex == input.size()) {
             if(inputIndex == input.size() - 1 && top == input[inputIndex]){
-//                cout << "TOOOPPP: " <<top << " | "<< " INPPPUUUTT: " << input[inputIndex] << endl;
                 temp += "accept";
             }else{
                 // case if the stack is empty and there remains inputs
@@ -51,21 +62,39 @@ void Parser::parse(const vector<string>& input, const string &derivation_path) {
                 inputIndex++;
             } else {
                 // case if the terminal in the stack does not match the input token action remove from the stack
-                temp +="Error, expected " + top + " but found " + input[inputIndex];
+                // Missing terminal handling
+                leftMostDerivation.push_back("Current derivation (after inserting " + top + "): \n" + leftDerivation);
+                temp +="Error: missing "+ top +", inserted to the input" ;
             }
         } else {
             // non-terminals
             vector<string> production = parsingTable.getProduction(top, input[inputIndex]);
-            // if production sync then error recovery action remove from stack this case should be included
             if (production.empty()) {
                 // case of error recovery action remove from the input token action discard the input token
                 temp += "Error:(illegal "+ top +" ), discard " + input[inputIndex] + ")";
+                leftMostDerivation.push_back("Current derivation (after deleting " + input[inputIndex] + "): \n" + leftDerivation);
                 parseStack.push(top);
                 inputIndex++;
             } else if(production.size() == 1 && production[0] == SYNCH){
+                // if production sync then error recovery action remove from stack
                 temp += "Error, M["+ top +", "+ input[inputIndex] +"] = synch "+ top +" has been popped";
+
+                // Update the current derivation for the leftmost derivation
+                size_t pos = leftDerivation.find(top);
+                if (pos != string::npos) {
+                    leftDerivation.replace(pos, top.length() + 1, join(production, " ", true));
+                    leftMostDerivation.push_back("Current derivation: \n" + leftDerivation);
+                }
             } else {
                 temp += top + " -> " + join(production, " ");
+
+                // Update the current derivation for the leftmost derivation
+                size_t pos = leftDerivation.find(top);
+                if (pos != string::npos) {
+                    leftDerivation.replace(pos, top.length() + 1, join(production, " ", true));
+                    leftMostDerivation.push_back("Current derivation: \n" + leftDerivation);
+                }
+
                 for (auto it = production.rbegin(); it != production.rend(); ++it) {
                     if (*it != EPSILON) {
                         parseStack.push(*it);
@@ -76,7 +105,10 @@ void Parser::parse(const vector<string>& input, const string &derivation_path) {
         derivationSteps.push_back(temp);
         temp = "";
     }
-    printDerivation(derivation_path);
+    string derivation_table_path = derivation_path.substr(0, derivation_path.find_last_of('.')) + "_table.txt";
+    string derivation_left_most_path = derivation_path.substr(0, derivation_path.find_last_of('.')) + "_left_most.txt";
+    printLeftDerivation(derivation_left_most_path);
+    printDerivation(derivation_table_path);
 }
 
 void Parser::printDerivation(const string &derivation_path) const {
@@ -96,9 +128,31 @@ void Parser::printDerivation(const string &derivation_path) const {
 }
 
 
+void Parser::printLeftDerivation() const {
+    for (const auto& step : leftMostDerivation) {
+        cout << step << endl;
+    }
+}
+
 void Parser::printDerivation() const {
     for (const auto& step : derivationSteps) {
         cout << step << endl;
     }
+}
+
+void Parser::printLeftDerivation(const string &left_most_derivation_path) const {
+    ofstream output_file(left_most_derivation_path);
+    if (!output_file.is_open()) {
+        cerr << "Error: Could not open file "
+             << left_most_derivation_path
+             << " for writing." << endl;
+        return;
+    }
+    output_file << "Derivation Steps:" << endl;
+    for (const auto& step : leftMostDerivation) {
+        output_file << step << endl;
+    }
+    cout << "Derivation Steps written to " << left_most_derivation_path << endl;
+    output_file.close();
 }
 

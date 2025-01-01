@@ -16,6 +16,7 @@ private:
     ParsingTable parsingTable;
     std::string startSymbol;
     std::vector<std::string> derivationSteps;
+    std::vector<std::string> leftMostDerivation;
     std::unordered_set<std::string> synchronizationPoints = {";", "}", "$"};
     std::string EPSILON = "\0";
     std::string END = "$";
@@ -23,14 +24,22 @@ private:
     SymbolSet terminals;
     SymbolSet nonTerminals;
 
-    std::string join(const std::vector<std::string>& vec, const std::string& delimiter) {
+    std::string join(const std::vector<std::string>& vec, const std::string& delimiter, const bool& isLeftDerivation = false) {
         std::string result;
-        for (const auto& str : vec) {
-            if(str == EPSILON) {
-                result += "\\L" + delimiter;
-                continue;
+        if(isLeftDerivation){
+            for (const auto & str : vec) {
+                if(str != EPSILON) {
+                    result += str + delimiter;
+                }
             }
-            result += str + delimiter;
+        }else{
+            for (const auto & i : vec) {
+                if(i == EPSILON) {
+                    result += "\\L" + delimiter;
+                    continue;
+                }
+                result += i + delimiter;
+            }
         }
         return result;
     }
@@ -63,7 +72,9 @@ public:
     }
 
     void parse(const std::vector<std::string>& input, const std::string &derivation_path);
+    void printLeftDerivation(const std::string &left_most_derivation_path) const;
     void printDerivation(const std::string &derivation_path) const;
+    void printLeftDerivation() const;
     void printDerivation() const;
 };
 
