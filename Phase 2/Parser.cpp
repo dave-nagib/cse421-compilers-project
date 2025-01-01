@@ -44,10 +44,12 @@ void Parser::parse(const vector<string>& input, const string &derivation_path) {
         // case if the stack is empty and there remains inputs
         if (top == END || inputIndex == input.size()) {
             if(inputIndex == input.size() - 1 && top == input[inputIndex]){
+                cerr << "Input is accepted" << endl;
                 temp += "accept";
             }else{
                 // case if the stack is empty and there remains inputs
                 // case if the input is empty and stack not empty
+                cerr << "Error: input is not accepted" << endl;
                 temp += "reject";
             }
             derivationSteps.push_back(temp);
@@ -64,6 +66,7 @@ void Parser::parse(const vector<string>& input, const string &derivation_path) {
                 // case if the terminal in the stack does not match the input token action remove from the stack
                 // Missing terminal handling
                 leftMostDerivation.push_back("Current derivation (after inserting " + top + "): \n" + leftDerivation);
+                cerr <<"Error: missing "+ top +", inserted to the input" << endl;
                 temp +="Error: missing "+ top +", inserted to the input" ;
             }
         } else {
@@ -71,13 +74,15 @@ void Parser::parse(const vector<string>& input, const string &derivation_path) {
             vector<string> production = parsingTable.getProduction(top, input[inputIndex]);
             if (production.empty()) {
                 // case of error recovery action remove from the input token action discard the input token
-                temp += "Error:(illegal "+ top +" ), discard " + input[inputIndex] + ")";
+                cerr << "Error:(illegal "+ top +" ), discard " + input[inputIndex] + " )" << endl;
+                temp += "Error:(illegal "+ top +" ), discard " + input[inputIndex] + " )";
                 leftMostDerivation.push_back("Current derivation (after deleting " + input[inputIndex] + "): \n" + leftDerivation);
                 parseStack.push(top);
                 inputIndex++;
             } else if(production.size() == 1 && production[0] == SYNCH){
                 // if production sync then error recovery action remove from stack
-                temp += "Error, M["+ top +", "+ input[inputIndex] +"] = synch "+ top +" has been popped";
+                cerr << "Error: M["+ top +", "+ input[inputIndex] +"] = synch, "+ top +" has been popped" << endl;
+                temp += "Error, M["+ top +", "+ input[inputIndex] +"] = synch, "+ top +" has been popped";
 
                 // Update the current derivation for the leftmost derivation
                 size_t pos = leftDerivation.find(top);
